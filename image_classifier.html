@@ -118,7 +118,12 @@
             opacity: 0.8;
         }
 
-        .back-btn {
+        .header-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .back-btn, .tracking-btn {
             padding: 10px 20px;
             background: rgba(255, 255, 255, 0.15);
             border: none;
@@ -128,10 +133,12 @@
             transition: all 0.3s ease;
             font-weight: 600;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .back-btn:hover {
+        .back-btn:hover, .tracking-btn:hover {
             background: rgba(255, 255, 255, 0.25);
             transform: translateY(-2px);
         }
@@ -408,6 +415,67 @@
             background: linear-gradient(to right, #FF9800, #FFB74D);
         }
 
+        .dustbin-recommendation {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .dustbin-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dustbin-colors {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .dustbin-color {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .green-dustbin {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+        }
+
+        .blue-dustbin {
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid #2196F3;
+        }
+
+        .black-dustbin {
+            background: rgba(97, 97, 97, 0.2);
+            border: 1px solid #616161;
+        }
+
+        .dustbin-icon {
+            font-size: 40px;
+        }
+
+        .dustbin-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .dustbin-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
         .report-section {
             margin-top: 30px;
         }
@@ -467,6 +535,97 @@
         .component-confidence {
             color: #8bc34a;
             font-weight: 600;
+        }
+
+        .awareness-section {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            animation: fadeIn 1s ease;
+        }
+
+        .awareness-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .awareness-header h3 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #8bc34a, #4caf50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .awareness-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .awareness-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .awareness-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .awareness-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .awareness-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .awareness-card-icon {
+            font-size: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wet-icon {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+        }
+
+        .dry-icon {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
+        }
+
+        .mixed-icon {
+            background: rgba(156, 39, 176, 0.2);
+            color: #9C27B0;
+        }
+
+        .awareness-card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .awareness-card-content ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .awareness-card-content li {
+            margin-bottom: 8px;
+            line-height: 1.5;
         }
 
         .loading-indicator {
@@ -643,9 +802,14 @@
                     <p>Smart Waste Management</p>
                 </div>
             </div>
-            <a href="#" class="back-btn">
-                <i class="fas fa-arrow-left"></i> Back to Home
-            </a>
+            <div class="header-buttons">
+                <a href="#" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+                <a href="dustbin_tracking.html" class="tracking-btn">
+                    <i class="fas fa-map-marker-alt"></i> Dustbin Tracking
+                </a>
+            </div>
         </header>
 
         <section class="page-header">
@@ -739,6 +903,25 @@
                     </div>
                 </div>
 
+                <div class="dustbin-recommendation" id="dustbinRecommendation" style="display: none;">
+                    <h4 class="dustbin-title">
+                        <i class="fas fa-trash-alt"></i> Recommended Disposal Method
+                    </h4>
+                    <p id="dustbinDescription">Based on the analysis, here's the recommended disposal method:</p>
+                    <div class="dustbin-colors">
+                        <div class="dustbin-color green-dustbin" id="greenDustbin">
+                            <i class="fas fa-trash dustbin-icon"></i>
+                            <div class="dustbin-name">Green Dustbin</div>
+                            <div class="dustbin-description" id="greenDustbinDesc">For wet/organic waste</div>
+                        </div>
+                        <div class="dustbin-color blue-dustbin" id="blueDustbin">
+                            <i class="fas fa-trash dustbin-icon"></i>
+                            <div class="dustbin-name">Blue Dustbin</div>
+                            <div class="dustbin-description" id="blueDustbinDesc">For dry/recyclable waste</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="report-section">
                     <h4 class="report-title">
                         <i class="fas fa-file-alt"></i> Detailed Analysis Report
@@ -764,6 +947,72 @@
                         <div id="dryComponentsList">
                             <!-- Dry components will be added here -->
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="awareness-section">
+            <div class="awareness-header">
+                <h3>Waste Segregation Awareness</h3>
+                <p>Learn about different types of waste and proper disposal methods</p>
+            </div>
+            <div class="awareness-content">
+                <div class="awareness-card">
+                    <div class="awareness-card-header">
+                        <div class="awareness-card-icon wet-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h4 class="awareness-card-title">Wet Waste</h4>
+                    </div>
+                    <div class="awareness-card-content">
+                        <p>Also known as organic or biodegradable waste. These are items that decompose naturally.</p>
+                        <ul>
+                            <li>Food scraps and leftovers</li>
+                            <li>Vegetable and fruit peels</li>
+                            <li>Tea leaves and coffee grounds</li>
+                            <li>Eggshells and nutshells</li>
+                            <li>Garden waste (leaves, grass)</li>
+                        </ul>
+                        <p><strong>Disposal:</strong> Use <span style="color: #4CAF50;">Green Dustbin</span> for composting or biogas generation.</p>
+                    </div>
+                </div>
+                <div class="awareness-card">
+                    <div class="awareness-card-header">
+                        <div class="awareness-card-icon dry-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h4 class="awareness-card-title">Dry Waste</h4>
+                    </div>
+                    <div class="awareness-card-content">
+                        <p>Also known as recyclable waste. These items can be processed and reused.</p>
+                        <ul>
+                            <li>Paper and cardboard</li>
+                            <li>Plastic containers and bottles</li>
+                            <li>Glass bottles and jars</li>
+                            <li>Metal cans and foils</li>
+                            <li>Textiles and clothing</li>
+                        </ul>
+                        <p><strong>Disposal:</strong> Use <span style="color: #2196F3;">Blue Dustbin</span> for recycling facilities.</p>
+                    </div>
+                </div>
+                <div class="awareness-card">
+                    <div class="awareness-card-header">
+                        <div class="awareness-card-icon mixed-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h4 class="awareness-card-title">Hazardous Waste</h4>
+                    </div>
+                    <div class="awareness-card-content">
+                        <p>Items that are potentially dangerous to health or environment.</p>
+                        <ul>
+                            <li>Batteries and electronics</li>
+                            <li>Medicines and medical waste</li>
+                            <li>Chemicals and pesticides</li>
+                            <li>Fluorescent bulbs and tubes</li>
+                            <li>Paints and solvents</li>
+                        </ul>
+                        <p><strong>Disposal:</strong> Use designated collection points or <span style="color: #616161;">Black Dustbin</span> for hazardous waste.</p>
                     </div>
                 </div>
             </div>
@@ -809,6 +1058,12 @@
         const dryConfidenceValue = document.getElementById('dryConfidenceValue');
         const wetConfidenceFill = document.getElementById('wetConfidenceFill');
         const dryConfidenceFill = document.getElementById('dryConfidenceFill');
+        const dustbinRecommendation = document.getElementById('dustbinRecommendation');
+        const dustbinDescription = document.getElementById('dustbinDescription');
+        const greenDustbin = document.getElementById('greenDustbin');
+        const blueDustbin = document.getElementById('blueDustbin');
+        const greenDustbinDesc = document.getElementById('greenDustbinDesc');
+        const blueDustbinDesc = document.getElementById('blueDustbinDesc');
         const reportContent = document.getElementById('reportContent');
         const wasteComponents = document.getElementById('wasteComponents');
         const wetComponentsList = document.getElementById('wetComponentsList');
@@ -945,6 +1200,7 @@
             resultDescription.textContent = 'Upload or capture an image to analyze waste composition.';
             wetConfidence.style.display = 'none';
             dryConfidence.style.display = 'none';
+            dustbinRecommendation.style.display = 'none';
             reportContent.innerHTML = '<p>No analysis report available yet. Please analyze an image first.</p>';
             wasteComponents.style.display = 'none';
             hideMessages();
@@ -987,6 +1243,7 @@
                     2. Confidence percentage for wet and dry waste classification (should add up to 100%)
                     3. List of identifiable components with their waste type (wet/dry) and confidence percentages
                     4. Detailed report explaining the composition and proper disposal recommendations
+                    5. Which color dustbin should be used for disposal (green for wet, blue for dry, both for mixed)
                     
                     If the image contains living beings (humans or animals), provide:
                     - A message explaining that the image contains living beings and cannot be analyzed for waste composition
@@ -1011,6 +1268,7 @@
                           "confidence": 0-100
                         }
                       ],
+                      "dustbin": "green|blue|both",
                       "report": "Detailed analysis and disposal recommendations or explanation of non-waste content",
                       "description": "Description of what is in the image"
                     }
@@ -1107,6 +1365,7 @@
                     wet: 50,
                     dry: 50
                 },
+                dustbin: "both",
                 components: [],
                 report: responseText,
                 description: "AI analysis completed"
@@ -1119,16 +1378,19 @@
             const wasteTypes = ['wet', 'dry', 'mixed'];
             const selectedType = wasteTypes[Math.floor(Math.random() * wasteTypes.length)];
 
-            let wetConf, dryConf;
+            let wetConf, dryConf, dustbin;
             if (selectedType === 'wet') {
                 wetConf = Math.floor(Math.random() * 30) + 70; // 70-100%
                 dryConf = 100 - wetConf;
+                dustbin = "green";
             } else if (selectedType === 'dry') {
                 dryConf = Math.floor(Math.random() * 30) + 70; // 70-100%
                 wetConf = 100 - dryConf;
+                dustbin = "blue";
             } else {
                 wetConf = Math.floor(Math.random() * 40) + 30; // 30-70%
                 dryConf = 100 - wetConf;
+                dustbin = "both";
             }
 
             const wetComponents = [
@@ -1149,9 +1411,9 @@
             }));
 
             const reports = {
-                wet: "This appears to be primarily wet/organic waste. It should be disposed of in wet waste bins for composting or biogas generation. Wet waste includes food scraps, vegetable peels, and other biodegradable materials that break down naturally.",
-                dry: "This appears to be primarily dry/recyclable waste. It should be sorted for recycling or proper disposal. Dry waste includes plastics, paper, cardboard, and other materials that can be recycled or reused.",
-                mixed: "This appears to be mixed waste containing both wet and dry components. For proper disposal, separate the wet and dry components. Wet waste should go to composting facilities, while dry waste should be sorted for recycling."
+                wet: "This appears to be primarily wet/organic waste. It should be disposed of in the green dustbin for composting or biogas generation. Wet waste includes food scraps, vegetable peels, and other biodegradable materials that break down naturally.",
+                dry: "This appears to be primarily dry/recyclable waste. It should be disposed of in the blue dustbin for recycling. Dry waste includes plastics, paper, cardboard, and other materials that can be recycled or reused.",
+                mixed: "This appears to be mixed waste containing both wet and dry components. For proper disposal, separate the wet and dry components. Wet waste should go to the green dustbin for composting, while dry waste should go to the blue dustbin for recycling."
             };
 
             return {
@@ -1162,6 +1424,7 @@
                     wet: wetConf,
                     dry: dryConf
                 },
+                dustbin: dustbin,
                 components: components,
                 report: reports[selectedType],
                 description: `This image shows ${selectedType} waste materials.`
@@ -1176,9 +1439,10 @@
                 wasteTypeBadge.className = 'waste-type-badge non-waste-badge';
                 resultDescription.textContent = 'This image contains living beings (humans or animals) and cannot be analyzed for waste composition.';
 
-                // Hide confidence meters
+                // Hide confidence meters and dustbin recommendation
                 wetConfidence.style.display = 'none';
                 dryConfidence.style.display = 'none';
+                dustbinRecommendation.style.display = 'none';
 
                 // Update report
                 reportContent.innerHTML = `<p>${result.report || 'This image appears to contain living beings. Please upload an image of waste materials for analysis.'}</p>`;
@@ -1199,6 +1463,7 @@
                 // Hide confidence meters for non-waste
                 wetConfidence.style.display = 'none';
                 dryConfidence.style.display = 'none';
+                dustbinRecommendation.style.display = 'none';
 
                 // Update report
                 reportContent.innerHTML = `<p>${result.report || 'Please upload an image of waste materials for analysis.'}</p>`;
@@ -1215,10 +1480,10 @@
 
             if (classification === 'wet') {
                 wasteTypeBadge.className = 'waste-type-badge wet-badge';
-                resultDescription.textContent = 'This waste appears to be primarily wet/organic waste and should be disposed of in wet waste bins for composting or biogas generation.';
+                resultDescription.textContent = 'This waste appears to be primarily wet/organic waste and should be disposed of in the green dustbin for composting or biogas generation.';
             } else if (classification === 'dry') {
                 wasteTypeBadge.className = 'waste-type-badge dry-badge';
-                resultDescription.textContent = 'This waste appears to be primarily dry/recyclable waste and should be sorted for recycling or proper disposal.';
+                resultDescription.textContent = 'This waste appears to be primarily dry/recyclable waste and should be disposed of in the blue dustbin for recycling.';
             } else {
                 wasteTypeBadge.className = 'waste-type-badge mixed-badge';
                 resultDescription.textContent = 'This appears to be mixed waste. Please separate wet and dry components for proper disposal.';
@@ -1235,6 +1500,30 @@
             dryConfidenceValue.textContent = `${dryConf}%`;
             dryConfidenceFill.style.width = `${dryConf}%`;
             dryConfidence.style.display = 'block';
+
+            // Update dustbin recommendation
+            const dustbinType = result.dustbin || 'both';
+            dustbinRecommendation.style.display = 'block';
+            
+            if (dustbinType === 'green') {
+                dustbinDescription.textContent = 'Based on the analysis, this waste should be disposed of in the GREEN dustbin.';
+                greenDustbin.style.opacity = '1';
+                blueDustbin.style.opacity = '0.5';
+                greenDustbinDesc.textContent = 'For wet/organic waste - Recommended';
+                blueDustbinDesc.textContent = 'For dry/recyclable waste - Not recommended';
+            } else if (dustbinType === 'blue') {
+                dustbinDescription.textContent = 'Based on the analysis, this waste should be disposed of in the BLUE dustbin.';
+                greenDustbin.style.opacity = '0.5';
+                blueDustbin.style.opacity = '1';
+                greenDustbinDesc.textContent = 'For wet/organic waste - Not recommended';
+                blueDustbinDesc.textContent = 'For dry/recyclable waste - Recommended';
+            } else {
+                dustbinDescription.textContent = 'Based on the analysis, this is mixed waste. Please separate components before disposal.';
+                greenDustbin.style.opacity = '1';
+                blueDustbin.style.opacity = '1';
+                greenDustbinDesc.textContent = 'For wet/organic waste - Use for wet components';
+                blueDustbinDesc.textContent = 'For dry/recyclable waste - Use for dry components';
+            }
 
             // Update report
             reportContent.innerHTML = `<p>${result.report}</p>`;
