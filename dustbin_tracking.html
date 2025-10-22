@@ -711,38 +711,6 @@
 <body>
     <div class="background-animation" id="backgroundAnimation"></div>
 
-    <!-- Manual Location Modal -->
-    <div class="modal" id="manualLocationModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-map-marker-alt"></i> Enter Location Manually</h3>
-                <button class="close-modal" id="closeModal">&times;</button>
-            </div>
-            <div class="input-group">
-                <label for="citySelect">Select Indian City</label>
-                <select id="citySelect">
-                    <option value="">-- Select a City --</option>
-                    <option value="delhi">Delhi</option>
-                    <option value="mumbai">Mumbai</option>
-                    <option value="bangalore">Bangalore</option>
-                    <option value="chennai">Chennai</option>
-                    <option value="kolkata">Kolkata</option>
-                    <option value="hyderabad">Hyderabad</option>
-                    <option value="ahmedabad">Ahmedabad</option>
-                    <option value="pune">Pune</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label for="addressInput">Specific Address (Optional)</label>
-                <input type="text" id="addressInput" placeholder="Enter specific area or landmark">
-            </div>
-            <div class="modal-actions">
-                <button class="action-btn secondary-btn" id="cancelManualLocation">Cancel</button>
-                <button class="action-btn primary-btn" id="confirmManualLocation">Confirm Location</button>
-            </div>
-        </div>
-    </div>
-
     <div class="container">
         <header>
             <div class="logo-container">
@@ -761,7 +729,7 @@
 
         <section class="page-header">
             <h2>Indian Waste Management Tracker</h2>
-            <p>Find waste disposal points, recycling centers, and landfills across major Indian cities using real data.
+            <p>Find waste disposal points, recycling centers, and dustbins across major Indian cities using real data.
             </p>
         </section>
 
@@ -797,7 +765,6 @@
                         <h3>Your Location</h3>
                     </div>
                     <div class="location-details">
-                        <!-- <p><i class="fas fa-location-arrow"></i> <span id="currentAddress">Waiting for GPS...</span></p> -->
                         <p><i class="fas fa-clock"></i> <span id="locationTime">--:--:--</span></p>
                         <p><i class="fas fa-satellite"></i> <span id="coordinates">Lat: --, Lng: --</span></p>
                     </div>
@@ -813,13 +780,6 @@
                         <button class="filter-btn" data-type="Construction">Construction</button>
                         <button class="filter-btn" data-type="Hazardous">Hazardous</button>
                     </div>
-                </div>
-
-                <div class="manual-location-input">
-                    <h3><i class="fas fa-keyboard"></i> Manual Location</h3>
-                    <button class="action-btn secondary-btn" id="enterManualLocation">
-                        <i class="fas fa-map-marked-alt"></i> Select Indian City
-                    </button>
                 </div>
 
                 <div class="action-buttons">
@@ -882,126 +842,74 @@
         async defer></script>
 
     <script>
-        // Dummy dataset based on the provided example
+        // Dummy dataset based on the provided example with "Dustbin" instead of "Landfill"
         const wasteManagementData = [
             // Mumbai data
-            { City: "Mumbai", WasteType: "Plastic", WasteGenerated: 6610, RecyclingRate: 68, PopulationDensity: 11191, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 3056, AwarenessCampaigns: 14, LandfillName: "Mumbai Landfill", Latitude: 19.0760, Longitude: 72.8777, LandfillCapacity: 45575, Year: 2019 },
-            { City: "Mumbai", WasteType: "Organic", WasteGenerated: 1181, RecyclingRate: 56, PopulationDensity: 11191, MunicipalEfficiency: 5, DisposalMethod: "Composting", Cost: 2778, AwarenessCampaigns: 12, LandfillName: "Mumbai Landfill", Latitude: 19.0760, Longitude: 72.8777, LandfillCapacity: 45575, Year: 2019 },
-            { City: "Mumbai", WasteType: "E-Waste", WasteGenerated: 8162, RecyclingRate: 53, PopulationDensity: 11191, MunicipalEfficiency: 8, DisposalMethod: "Incineration", Cost: 3390, AwarenessCampaigns: 13, LandfillName: "Mumbai Landfill", Latitude: 19.0760, Longitude: 72.8777, LandfillCapacity: 45575, Year: 2019 },
-            { City: "Mumbai", WasteType: "Construction", WasteGenerated: 8929, RecyclingRate: 56, PopulationDensity: 11191, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1498, AwarenessCampaigns: 14, LandfillName: "Mumbai Landfill", Latitude: 19.0760, Longitude: 72.8777, LandfillCapacity: 45575, Year: 2019 },
-            { City: "Mumbai", WasteType: "Hazardous", WasteGenerated: 5032, RecyclingRate: 44, PopulationDensity: 11191, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2221, AwarenessCampaigns: 16, LandfillName: "Mumbai Landfill", Latitude: 19.0760, Longitude: 72.8777, LandfillCapacity: 45575, Year: 2019 },
-            { City: "Mumbai", WasteType: "Plastic", WasteGenerated: 7456, RecyclingRate: 73, PopulationDensity: 11191, MunicipalEfficiency: 9, DisposalMethod: "Landfill", Cost: 3195, AwarenessCampaigns: 6, LandfillName: "Mumbai Landfill", Latitude: 19.0760, Longitude: 72.8777, LandfillCapacity: 45575, Year: 2020 },
-            { City: "Mumbai", WasteType: "Organic", WasteGenerated: 7118, RecyclingRate: 37, PopulationDensity: 11191, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 3686, AwarenessCampaigns: 14, LandfillName: "Mumbai Landfill", Latitude: 19.0760, Longitude: 72.8777, LandfillCapacity: 45575, Year: 2020 },
-            { City: "Mumbai", WasteType: "E-Waste", WasteGenerated: 9189, RecyclingRate: 57, PopulationDensity: 11191, MunicipalEfficiency: 10, DisposalMethod: "Landfill", Cost: 1791, AwarenessCampaigns: 12, LandfillName: "Mumbai Landfill", Latitude: 19.0760, Longitude: 72.8777, LandfillCapacity: 45575, Year: 2020 },
+            { City: "Mumbai", WasteType: "Plastic", WasteGenerated: 6610, RecyclingRate: 68, PopulationDensity: 11191, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 3056, AwarenessCampaigns: 14, LandfillName: "Mumbai Central Dustbin", Latitude: 19.0760, Longitude: 72.8777, LandfillCapacity: 45575, Year: 2019 },
+            { City: "Mumbai", WasteType: "Organic", WasteGenerated: 1181, RecyclingRate: 56, PopulationDensity: 11191, MunicipalEfficiency: 5, DisposalMethod: "Composting", Cost: 2778, AwarenessCampaigns: 12, LandfillName: "Mumbai South Dustbin", Latitude: 19.0860, Longitude: 72.8877, LandfillCapacity: 45575, Year: 2019 },
+            { City: "Mumbai", WasteType: "E-Waste", WasteGenerated: 8162, RecyclingRate: 53, PopulationDensity: 11191, MunicipalEfficiency: 8, DisposalMethod: "Incineration", Cost: 3390, AwarenessCampaigns: 13, LandfillName: "Mumbai West Dustbin", Latitude: 19.0660, Longitude: 72.8677, LandfillCapacity: 45575, Year: 2019 },
+            { City: "Mumbai", WasteType: "Construction", WasteGenerated: 8929, RecyclingRate: 56, PopulationDensity: 11191, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1498, AwarenessCampaigns: 14, LandfillName: "Mumbai North Dustbin", Latitude: 19.0960, Longitude: 72.8477, LandfillCapacity: 45575, Year: 2019 },
+            { City: "Mumbai", WasteType: "Hazardous", WasteGenerated: 5032, RecyclingRate: 44, PopulationDensity: 11191, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2221, AwarenessCampaigns: 16, LandfillName: "Mumbai East Dustbin", Latitude: 19.0760, Longitude: 72.8977, LandfillCapacity: 45575, Year: 2019 },
+            { City: "Mumbai", WasteType: "Plastic", WasteGenerated: 7456, RecyclingRate: 73, PopulationDensity: 11191, MunicipalEfficiency: 9, DisposalMethod: "Landfill", Cost: 3195, AwarenessCampaigns: 6, LandfillName: "Mumbai Central Recycling Center", Latitude: 19.0660, Longitude: 72.8577, LandfillCapacity: 45575, Year: 2020 },
+            { City: "Mumbai", WasteType: "Organic", WasteGenerated: 7118, RecyclingRate: 37, PopulationDensity: 11191, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 3686, AwarenessCampaigns: 14, LandfillName: "Mumbai Organic Waste Facility", Latitude: 19.0860, Longitude: 72.8677, LandfillCapacity: 45575, Year: 2020 },
+            { City: "Mumbai", WasteType: "E-Waste", WasteGenerated: 9189, RecyclingRate: 57, PopulationDensity: 11191, MunicipalEfficiency: 10, DisposalMethod: "Landfill", Cost: 1791, AwarenessCampaigns: 12, LandfillName: "Mumbai E-Waste Center", Latitude: 19.0960, Longitude: 72.8777, LandfillCapacity: 45575, Year: 2020 },
 
             // Delhi data
-            { City: "Delhi", WasteType: "Plastic", WasteGenerated: 5820, RecyclingRate: 62, PopulationDensity: 11320, MunicipalEfficiency: 8, DisposalMethod: "Recycling", Cost: 2980, AwarenessCampaigns: 18, LandfillName: "Delhi Landfill", Latitude: 28.6139, Longitude: 77.2090, LandfillCapacity: 52000, Year: 2019 },
-            { City: "Delhi", WasteType: "Organic", WasteGenerated: 3250, RecyclingRate: 48, PopulationDensity: 11320, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 2450, AwarenessCampaigns: 15, LandfillName: "Delhi Landfill", Latitude: 28.6139, Longitude: 77.2090, LandfillCapacity: 52000, Year: 2019 },
-            { City: "Delhi", WasteType: "E-Waste", WasteGenerated: 2100, RecyclingRate: 45, PopulationDensity: 11320, MunicipalEfficiency: 7, DisposalMethod: "Incineration", Cost: 3150, AwarenessCampaigns: 12, LandfillName: "Delhi Landfill", Latitude: 28.6139, Longitude: 77.2090, LandfillCapacity: 52000, Year: 2019 },
-            { City: "Delhi", WasteType: "Construction", WasteGenerated: 4850, RecyclingRate: 52, PopulationDensity: 11320, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1650, AwarenessCampaigns: 10, LandfillName: "Delhi Landfill", Latitude: 28.6139, Longitude: 77.2090, LandfillCapacity: 52000, Year: 2019 },
-            { City: "Delhi", WasteType: "Hazardous", WasteGenerated: 1200, RecyclingRate: 38, PopulationDensity: 11320, MunicipalEfficiency: 6, DisposalMethod: "Recycling", Cost: 2850, AwarenessCampaigns: 14, LandfillName: "Delhi Landfill", Latitude: 28.6139, Longitude: 77.2090, LandfillCapacity: 52000, Year: 2019 },
+            { City: "Delhi", WasteType: "Plastic", WasteGenerated: 5820, RecyclingRate: 62, PopulationDensity: 11320, MunicipalEfficiency: 8, DisposalMethod: "Recycling", Cost: 2980, AwarenessCampaigns: 18, LandfillName: "Delhi Central Dustbin", Latitude: 28.6139, Longitude: 77.2090, LandfillCapacity: 52000, Year: 2019 },
+            { City: "Delhi", WasteType: "Organic", WasteGenerated: 3250, RecyclingRate: 48, PopulationDensity: 11320, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 2450, AwarenessCampaigns: 15, LandfillName: "Delhi South Dustbin", Latitude: 28.6039, Longitude: 77.1990, LandfillCapacity: 52000, Year: 2019 },
+            { City: "Delhi", WasteType: "E-Waste", WasteGenerated: 2100, RecyclingRate: 45, PopulationDensity: 11320, MunicipalEfficiency: 7, DisposalMethod: "Incineration", Cost: 3150, AwarenessCampaigns: 12, LandfillName: "Delhi West Dustbin", Latitude: 28.6239, Longitude: 77.1890, LandfillCapacity: 52000, Year: 2019 },
+            { City: "Delhi", WasteType: "Construction", WasteGenerated: 4850, RecyclingRate: 52, PopulationDensity: 11320, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1650, AwarenessCampaigns: 10, LandfillName: "Delhi North Dustbin", Latitude: 28.6339, Longitude: 77.2190, LandfillCapacity: 52000, Year: 2019 },
+            { City: "Delhi", WasteType: "Hazardous", WasteGenerated: 1200, RecyclingRate: 38, PopulationDensity: 11320, MunicipalEfficiency: 6, DisposalMethod: "Recycling", Cost: 2850, AwarenessCampaigns: 14, LandfillName: "Delhi East Dustbin", Latitude: 28.6039, Longitude: 77.2290, LandfillCapacity: 52000, Year: 2019 },
 
             // Bangalore data
-            { City: "Bangalore", WasteType: "Plastic", WasteGenerated: 4200, RecyclingRate: 65, PopulationDensity: 10854, MunicipalEfficiency: 8, DisposalMethod: "Recycling", Cost: 2750, AwarenessCampaigns: 16, LandfillName: "Bangalore Landfill", Latitude: 12.9716, Longitude: 77.5946, LandfillCapacity: 38500, Year: 2019 },
-            { City: "Bangalore", WasteType: "Organic", WasteGenerated: 2800, RecyclingRate: 55, PopulationDensity: 10854, MunicipalEfficiency: 7, DisposalMethod: "Composting", Cost: 2200, AwarenessCampaigns: 13, LandfillName: "Bangalore Landfill", Latitude: 12.9716, Longitude: 77.5946, LandfillCapacity: 38500, Year: 2019 },
-            { City: "Bangalore", WasteType: "E-Waste", WasteGenerated: 1500, RecyclingRate: 60, PopulationDensity: 10854, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 3050, AwarenessCampaigns: 11, LandfillName: "Bangalore Landfill", Latitude: 12.9716, Longitude: 77.5946, LandfillCapacity: 38500, Year: 2019 },
-            { City: "Bangalore", WasteType: "Construction", WasteGenerated: 3200, RecyclingRate: 50, PopulationDensity: 10854, MunicipalEfficiency: 6, DisposalMethod: "Landfill", Cost: 1800, AwarenessCampaigns: 9, LandfillName: "Bangalore Landfill", Latitude: 12.9716, Longitude: 77.5946, LandfillCapacity: 38500, Year: 2019 },
+            { City: "Bangalore", WasteType: "Plastic", WasteGenerated: 4200, RecyclingRate: 65, PopulationDensity: 10854, MunicipalEfficiency: 8, DisposalMethod: "Recycling", Cost: 2750, AwarenessCampaigns: 16, LandfillName: "Bangalore Central Dustbin", Latitude: 12.9716, Longitude: 77.5946, LandfillCapacity: 38500, Year: 2019 },
+            { City: "Bangalore", WasteType: "Organic", WasteGenerated: 2800, RecyclingRate: 55, PopulationDensity: 10854, MunicipalEfficiency: 7, DisposalMethod: "Composting", Cost: 2200, AwarenessCampaigns: 13, LandfillName: "Bangalore South Dustbin", Latitude: 12.9616, Longitude: 77.5846, LandfillCapacity: 38500, Year: 2019 },
+            { City: "Bangalore", WasteType: "E-Waste", WasteGenerated: 1500, RecyclingRate: 60, PopulationDensity: 10854, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 3050, AwarenessCampaigns: 11, LandfillName: "Bangalore West Dustbin", Latitude: 12.9816, Longitude: 77.5746, LandfillCapacity: 38500, Year: 2019 },
+            { City: "Bangalore", WasteType: "Construction", WasteGenerated: 3200, RecyclingRate: 50, PopulationDensity: 10854, MunicipalEfficiency: 6, DisposalMethod: "Landfill", Cost: 1800, AwarenessCampaigns: 9, LandfillName: "Bangalore North Dustbin", Latitude: 12.9916, Longitude: 77.6046, LandfillCapacity: 38500, Year: 2019 },
 
             // Chennai data
-            { City: "Chennai", WasteType: "Plastic", WasteGenerated: 3800, RecyclingRate: 58, PopulationDensity: 10687, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2650, AwarenessCampaigns: 14, LandfillName: "Chennai Landfill", Latitude: 13.0827, Longitude: 80.2707, LandfillCapacity: 42000, Year: 2019 },
-            { City: "Chennai", WasteType: "Organic", WasteGenerated: 2400, RecyclingRate: 52, PopulationDensity: 10687, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 2100, AwarenessCampaigns: 12, LandfillName: "Chennai Landfill", Latitude: 13.0827, Longitude: 80.2707, LandfillCapacity: 42000, Year: 2019 },
-            { City: "Chennai", WasteType: "E-Waste", WasteGenerated: 1100, RecyclingRate: 48, PopulationDensity: 10687, MunicipalEfficiency: 7, DisposalMethod: "Incineration", Cost: 2950, AwarenessCampaigns: 10, LandfillName: "Chennai Landfill", Latitude: 13.0827, Longitude: 80.2707, LandfillCapacity: 42000, Year: 2019 },
-            { City: "Chennai", WasteType: "Construction", WasteGenerated: 2900, RecyclingRate: 45, PopulationDensity: 10687, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1700, AwarenessCampaigns: 8, LandfillName: "Chennai Landfill", Latitude: 13.0827, Longitude: 80.2707, LandfillCapacity: 42000, Year: 2019 },
+            { City: "Chennai", WasteType: "Plastic", WasteGenerated: 3800, RecyclingRate: 58, PopulationDensity: 10687, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2650, AwarenessCampaigns: 14, LandfillName: "Chennai Central Dustbin", Latitude: 13.0827, Longitude: 80.2707, LandfillCapacity: 42000, Year: 2019 },
+            { City: "Chennai", WasteType: "Organic", WasteGenerated: 2400, RecyclingRate: 52, PopulationDensity: 10687, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 2100, AwarenessCampaigns: 12, LandfillName: "Chennai South Dustbin", Latitude: 13.0727, Longitude: 80.2607, LandfillCapacity: 42000, Year: 2019 },
+            { City: "Chennai", WasteType: "E-Waste", WasteGenerated: 1100, RecyclingRate: 48, PopulationDensity: 10687, MunicipalEfficiency: 7, DisposalMethod: "Incineration", Cost: 2950, AwarenessCampaigns: 10, LandfillName: "Chennai West Dustbin", Latitude: 13.0927, Longitude: 80.2507, LandfillCapacity: 42000, Year: 2019 },
+            { City: "Chennai", WasteType: "Construction", WasteGenerated: 2900, RecyclingRate: 45, PopulationDensity: 10687, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1700, AwarenessCampaigns: 8, LandfillName: "Chennai North Dustbin", Latitude: 13.1027, Longitude: 80.2807, LandfillCapacity: 42000, Year: 2019 },
 
             // Kolkata data
-            { City: "Kolkata", WasteType: "Plastic", WasteGenerated: 3500, RecyclingRate: 54, PopulationDensity: 10467, MunicipalEfficiency: 6, DisposalMethod: "Recycling", Cost: 2550, AwarenessCampaigns: 13, LandfillName: "Kolkata Landfill", Latitude: 22.5726, Longitude: 88.3639, LandfillCapacity: 39500, Year: 2019 },
-            { City: "Kolkata", WasteType: "Organic", WasteGenerated: 2100, RecyclingRate: 49, PopulationDensity: 10467, MunicipalEfficiency: 5, DisposalMethod: "Composting", Cost: 2000, AwarenessCampaigns: 11, LandfillName: "Kolkata Landfill", Latitude: 22.5726, Longitude: 88.3639, LandfillCapacity: 39500, Year: 2019 },
-            { City: "Kolkata", WasteType: "E-Waste", WasteGenerated: 900, RecyclingRate: 42, PopulationDensity: 10467, MunicipalEfficiency: 6, DisposalMethod: "Incineration", Cost: 2850, AwarenessCampaigns: 9, LandfillName: "Kolkata Landfill", Latitude: 22.5726, Longitude: 88.3639, LandfillCapacity: 39500, Year: 2019 },
-            { City: "Kolkata", WasteType: "Construction", WasteGenerated: 2600, RecyclingRate: 40, PopulationDensity: 10467, MunicipalEfficiency: 4, DisposalMethod: "Landfill", Cost: 1600, AwarenessCampaigns: 7, LandfillName: "Kolkata Landfill", Latitude: 22.5726, Longitude: 88.3639, LandfillCapacity: 39500, Year: 2019 },
+            { City: "Kolkata", WasteType: "Plastic", WasteGenerated: 3500, RecyclingRate: 54, PopulationDensity: 10467, MunicipalEfficiency: 6, DisposalMethod: "Recycling", Cost: 2550, AwarenessCampaigns: 13, LandfillName: "Kolkata Central Dustbin", Latitude: 22.5726, Longitude: 88.3639, LandfillCapacity: 39500, Year: 2019 },
+            { City: "Kolkata", WasteType: "Organic", WasteGenerated: 2100, RecyclingRate: 49, PopulationDensity: 10467, MunicipalEfficiency: 5, DisposalMethod: "Composting", Cost: 2000, AwarenessCampaigns: 11, LandfillName: "Kolkata South Dustbin", Latitude: 22.5626, Longitude: 88.3539, LandfillCapacity: 39500, Year: 2019 },
+            { City: "Kolkata", WasteType: "E-Waste", WasteGenerated: 900, RecyclingRate: 42, PopulationDensity: 10467, MunicipalEfficiency: 6, DisposalMethod: "Incineration", Cost: 2850, AwarenessCampaigns: 9, LandfillName: "Kolkata West Dustbin", Latitude: 22.5826, Longitude: 88.3439, LandfillCapacity: 39500, Year: 2019 },
+            { City: "Kolkata", WasteType: "Construction", WasteGenerated: 2600, RecyclingRate: 40, PopulationDensity: 10467, MunicipalEfficiency: 4, DisposalMethod: "Landfill", Cost: 1600, AwarenessCampaigns: 7, LandfillName: "Kolkata North Dustbin", Latitude: 22.5926, Longitude: 88.3739, LandfillCapacity: 39500, Year: 2019 },
 
             // Hyderabad data
-            { City: "Hyderabad", WasteType: "Plastic", WasteGenerated: 3200, RecyclingRate: 61, PopulationDensity: 10234, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2450, AwarenessCampaigns: 15, LandfillName: "Hyderabad Landfill", Latitude: 17.3850, Longitude: 78.4867, LandfillCapacity: 36500, Year: 2019 },
-            { City: "Hyderabad", WasteType: "Organic", WasteGenerated: 1900, RecyclingRate: 53, PopulationDensity: 10234, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 1900, AwarenessCampaigns: 12, LandfillName: "Hyderabad Landfill", Latitude: 17.3850, Longitude: 78.4867, LandfillCapacity: 36500, Year: 2019 },
-            { City: "Hyderabad", WasteType: "E-Waste", WasteGenerated: 800, RecyclingRate: 55, PopulationDensity: 10234, MunicipalEfficiency: 8, DisposalMethod: "Incineration", Cost: 2750, AwarenessCampaigns: 10, LandfillName: "Hyderabad Landfill", Latitude: 17.3850, Longitude: 78.4867, LandfillCapacity: 36500, Year: 2019 },
-            { City: "Hyderabad", WasteType: "Construction", WasteGenerated: 2300, RecyclingRate: 47, PopulationDensity: 10234, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1500, AwarenessCampaigns: 8, LandfillName: "Hyderabad Landfill", Latitude: 17.3850, Longitude: 78.4867, LandfillCapacity: 36500, Year: 2019 },
+            { City: "Hyderabad", WasteType: "Plastic", WasteGenerated: 3200, RecyclingRate: 61, PopulationDensity: 10234, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2450, AwarenessCampaigns: 15, LandfillName: "Hyderabad Central Dustbin", Latitude: 17.3850, Longitude: 78.4867, LandfillCapacity: 36500, Year: 2019 },
+            { City: "Hyderabad", WasteType: "Organic", WasteGenerated: 1900, RecyclingRate: 53, PopulationDensity: 10234, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 1900, AwarenessCampaigns: 12, LandfillName: "Hyderabad South Dustbin", Latitude: 17.3750, Longitude: 78.4767, LandfillCapacity: 36500, Year: 2019 },
+            { City: "Hyderabad", WasteType: "E-Waste", WasteGenerated: 800, RecyclingRate: 55, PopulationDensity: 10234, MunicipalEfficiency: 8, DisposalMethod: "Incineration", Cost: 2750, AwarenessCampaigns: 10, LandfillName: "Hyderabad West Dustbin", Latitude: 17.3950, Longitude: 78.4667, LandfillCapacity: 36500, Year: 2019 },
+            { City: "Hyderabad", WasteType: "Construction", WasteGenerated: 2300, RecyclingRate: 47, PopulationDensity: 10234, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1500, AwarenessCampaigns: 8, LandfillName: "Hyderabad North Dustbin", Latitude: 17.4050, Longitude: 78.4967, LandfillCapacity: 36500, Year: 2019 },
 
             // Ahmedabad data
-            { City: "Ahmedabad", WasteType: "Plastic", WasteGenerated: 2800, RecyclingRate: 59, PopulationDensity: 9876, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2350, AwarenessCampaigns: 14, LandfillName: "Ahmedabad Landfill", Latitude: 23.0225, Longitude: 72.5714, LandfillCapacity: 34000, Year: 2019 },
-            { City: "Ahmedabad", WasteType: "Organic", WasteGenerated: 1700, RecyclingRate: 51, PopulationDensity: 9876, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 1800, AwarenessCampaigns: 11, LandfillName: "Ahmedabad Landfill", Latitude: 23.0225, Longitude: 72.5714, LandfillCapacity: 34000, Year: 2019 },
-            { City: "Ahmedabad", WasteType: "E-Waste", WasteGenerated: 700, RecyclingRate: 46, PopulationDensity: 9876, MunicipalEfficiency: 7, DisposalMethod: "Incineration", Cost: 2650, AwarenessCampaigns: 9, LandfillName: "Ahmedabad Landfill", Latitude: 23.0225, Longitude: 72.5714, LandfillCapacity: 34000, Year: 2019 },
-            { City: "Ahmedabad", WasteType: "Construction", WasteGenerated: 2000, RecyclingRate: 43, PopulationDensity: 9876, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1400, AwarenessCampaigns: 7, LandfillName: "Ahmedabad Landfill", Latitude: 23.0225, Longitude: 72.5714, LandfillCapacity: 34000, Year: 2019 },
+            { City: "Ahmedabad", WasteType: "Plastic", WasteGenerated: 2800, RecyclingRate: 59, PopulationDensity: 9876, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2350, AwarenessCampaigns: 14, LandfillName: "Ahmedabad Central Dustbin", Latitude: 23.0225, Longitude: 72.5714, LandfillCapacity: 34000, Year: 2019 },
+            { City: "Ahmedabad", WasteType: "Organic", WasteGenerated: 1700, RecyclingRate: 51, PopulationDensity: 9876, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 1800, AwarenessCampaigns: 11, LandfillName: "Ahmedabad South Dustbin", Latitude: 23.0125, Longitude: 72.5614, LandfillCapacity: 34000, Year: 2019 },
+            { City: "Ahmedabad", WasteType: "E-Waste", WasteGenerated: 700, RecyclingRate: 46, PopulationDensity: 9876, MunicipalEfficiency: 7, DisposalMethod: "Incineration", Cost: 2650, AwarenessCampaigns: 9, LandfillName: "Ahmedabad West Dustbin", Latitude: 23.0325, Longitude: 72.5514, LandfillCapacity: 34000, Year: 2019 },
+            { City: "Ahmedabad", WasteType: "Construction", WasteGenerated: 2000, RecyclingRate: 43, PopulationDensity: 9876, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1400, AwarenessCampaigns: 7, LandfillName: "Ahmedabad North Dustbin", Latitude: 23.0425, Longitude: 72.5814, LandfillCapacity: 34000, Year: 2019 },
 
             // Pune data
-            { City: "Pune", WasteType: "Plastic", WasteGenerated: 2500, RecyclingRate: 63, PopulationDensity: 9456, MunicipalEfficiency: 8, DisposalMethod: "Recycling", Cost: 2250, AwarenessCampaigns: 16, LandfillName: "Pune Landfill", Latitude: 18.5204, Longitude: 73.8567, LandfillCapacity: 31500, Year: 2019 },
-            { City: "Pune", WasteType: "Organic", WasteGenerated: 1500, RecyclingRate: 54, PopulationDensity: 9456, MunicipalEfficiency: 7, DisposalMethod: "Composting", Cost: 1700, AwarenessCampaigns: 13, LandfillName: "Pune Landfill", Latitude: 18.5204, Longitude: 73.8567, LandfillCapacity: 31500, Year: 2019 },
-            { City: "Pune", WasteType: "E-Waste", WasteGenerated: 600, RecyclingRate: 58, PopulationDensity: 9456, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 2550, AwarenessCampaigns: 11, LandfillName: "Pune Landfill", Latitude: 18.5204, Longitude: 73.8567, LandfillCapacity: 31500, Year: 2019 },
-            { City: "Pune", WasteType: "Construction", WasteGenerated: 1800, RecyclingRate: 48, PopulationDensity: 9456, MunicipalEfficiency: 6, DisposalMethod: "Landfill", Cost: 1300, AwarenessCampaigns: 9, LandfillName: "Pune Landfill", Latitude: 18.5204, Longitude: 73.8567, LandfillCapacity: 31500, Year: 2019 },
+            { City: "Pune", WasteType: "Plastic", WasteGenerated: 2500, RecyclingRate: 63, PopulationDensity: 9456, MunicipalEfficiency: 8, DisposalMethod: "Recycling", Cost: 2250, AwarenessCampaigns: 16, LandfillName: "Pune Central Dustbin", Latitude: 18.5204, Longitude: 73.8567, LandfillCapacity: 31500, Year: 2019 },
+            { City: "Pune", WasteType: "Organic", WasteGenerated: 1500, RecyclingRate: 54, PopulationDensity: 9456, MunicipalEfficiency: 7, DisposalMethod: "Composting", Cost: 1700, AwarenessCampaigns: 13, LandfillName: "Pune South Dustbin", Latitude: 18.5104, Longitude: 73.8467, LandfillCapacity: 31500, Year: 2019 },
+            { City: "Pune", WasteType: "E-Waste", WasteGenerated: 600, RecyclingRate: 58, PopulationDensity: 9456, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 2550, AwarenessCampaigns: 11, LandfillName: "Pune West Dustbin", Latitude: 18.5304, Longitude: 73.8367, LandfillCapacity: 31500, Year: 2019 },
+            { City: "Pune", WasteType: "Construction", WasteGenerated: 1800, RecyclingRate: 48, PopulationDensity: 9456, MunicipalEfficiency: 6, DisposalMethod: "Landfill", Cost: 1300, AwarenessCampaigns: 9, LandfillName: "Pune North Dustbin", Latitude: 18.5404, Longitude: 73.8667, LandfillCapacity: 31500, Year: 2019 },
 
             // Mysore data
-            // --- Mysore Waste Management Data (2019–2024) ---
+            { City: "Mysore", WasteType: "Plastic", WasteGenerated: 1800, RecyclingRate: 59, PopulationDensity: 7600, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2100, AwarenessCampaigns: 14, LandfillName: "Mysore Central Dustbin", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 24800, Year: 2019 },
+            { City: "Mysore", WasteType: "Organic", WasteGenerated: 2200, RecyclingRate: 68, PopulationDensity: 7600, MunicipalEfficiency: 8, DisposalMethod: "Composting", Cost: 1650, AwarenessCampaigns: 17, LandfillName: "Mysore South Dustbin", Latitude: 12.2858, Longitude: 76.6294, LandfillCapacity: 24800, Year: 2019 },
+            { City: "Mysore", WasteType: "E-Waste", WasteGenerated: 450, RecyclingRate: 61, PopulationDensity: 7600, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 2500, AwarenessCampaigns: 10, LandfillName: "Mysore West Dustbin", Latitude: 12.3058, Longitude: 76.6194, LandfillCapacity: 24800, Year: 2019 },
+            { City: "Mysore", WasteType: "Construction", WasteGenerated: 1600, RecyclingRate: 44, PopulationDensity: 7600, MunicipalEfficiency: 6, DisposalMethod: "Landfill", Cost: 1200, AwarenessCampaigns: 8, LandfillName: "Mysore North Dustbin", Latitude: 12.3158, Longitude: 76.6494, LandfillCapacity: 24800, Year: 2019 },
 
-            { City: "Mysore", WasteType: "Plastic", WasteGenerated: 1800, RecyclingRate: 59, PopulationDensity: 7600, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2100, AwarenessCampaigns: 14, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 24800, Year: 2019 },
-            { City: "Mysore", WasteType: "Organic", WasteGenerated: 2200, RecyclingRate: 68, PopulationDensity: 7600, MunicipalEfficiency: 8, DisposalMethod: "Composting", Cost: 1650, AwarenessCampaigns: 17, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 24800, Year: 2019 },
-            { City: "Mysore", WasteType: "E-Waste", WasteGenerated: 450, RecyclingRate: 61, PopulationDensity: 7600, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 2500, AwarenessCampaigns: 10, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 24800, Year: 2019 },
-            { City: "Mysore", WasteType: "Construction", WasteGenerated: 1600, RecyclingRate: 44, PopulationDensity: 7600, MunicipalEfficiency: 6, DisposalMethod: "Landfill", Cost: 1200, AwarenessCampaigns: 8, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 24800, Year: 2019 },
-
-            { City: "Mysore", WasteType: "Plastic", WasteGenerated: 1900, RecyclingRate: 61, PopulationDensity: 7700, MunicipalEfficiency: 8, DisposalMethod: "Recycling", Cost: 2150, AwarenessCampaigns: 15, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 25000, Year: 2020 },
-            { City: "Mysore", WasteType: "Organic", WasteGenerated: 2250, RecyclingRate: 69, PopulationDensity: 7700, MunicipalEfficiency: 8, DisposalMethod: "Composting", Cost: 1680, AwarenessCampaigns: 18, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 25000, Year: 2020 },
-            { City: "Mysore", WasteType: "E-Waste", WasteGenerated: 480, RecyclingRate: 62, PopulationDensity: 7700, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 2550, AwarenessCampaigns: 11, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 25000, Year: 2020 },
-            { City: "Mysore", WasteType: "Construction", WasteGenerated: 1650, RecyclingRate: 45, PopulationDensity: 7700, MunicipalEfficiency: 7, DisposalMethod: "Landfill", Cost: 1220, AwarenessCampaigns: 9, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 25000, Year: 2020 },
-
-            { City: "Mysore", WasteType: "Plastic", WasteGenerated: 2000, RecyclingRate: 63, PopulationDensity: 7800, MunicipalEfficiency: 8, DisposalMethod: "Recycling", Cost: 2200, AwarenessCampaigns: 16, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 25500, Year: 2021 },
-            { City: "Mysore", WasteType: "Organic", WasteGenerated: 2300, RecyclingRate: 70, PopulationDensity: 7800, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 1700, AwarenessCampaigns: 19, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 25500, Year: 2021 },
-            { City: "Mysore", WasteType: "E-Waste", WasteGenerated: 500, RecyclingRate: 63, PopulationDensity: 7800, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 2600, AwarenessCampaigns: 12, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 25500, Year: 2021 },
-            { City: "Mysore", WasteType: "Construction", WasteGenerated: 1700, RecyclingRate: 46, PopulationDensity: 7800, MunicipalEfficiency: 7, DisposalMethod: "Landfill", Cost: 1250, AwarenessCampaigns: 10, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 25500, Year: 2021 },
-
-            { City: "Mysore", WasteType: "Plastic", WasteGenerated: 2150, RecyclingRate: 65, PopulationDensity: 7900, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 2250, AwarenessCampaigns: 17, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 26000, Year: 2022 },
-            { City: "Mysore", WasteType: "Organic", WasteGenerated: 2400, RecyclingRate: 71, PopulationDensity: 7900, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 1720, AwarenessCampaigns: 20, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 26000, Year: 2022 },
-            { City: "Mysore", WasteType: "E-Waste", WasteGenerated: 530, RecyclingRate: 64, PopulationDensity: 7900, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 2650, AwarenessCampaigns: 13, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 26000, Year: 2022 },
-            { City: "Mysore", WasteType: "Construction", WasteGenerated: 1750, RecyclingRate: 47, PopulationDensity: 7900, MunicipalEfficiency: 8, DisposalMethod: "Landfill", Cost: 1280, AwarenessCampaigns: 11, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 26000, Year: 2022 },
-
-            { City: "Mysore", WasteType: "Plastic", WasteGenerated: 2250, RecyclingRate: 66, PopulationDensity: 8000, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 2300, AwarenessCampaigns: 18, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 26500, Year: 2023 },
-            { City: "Mysore", WasteType: "Organic", WasteGenerated: 2500, RecyclingRate: 72, PopulationDensity: 8000, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 1740, AwarenessCampaigns: 21, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 26500, Year: 2023 },
-            { City: "Mysore", WasteType: "E-Waste", WasteGenerated: 560, RecyclingRate: 65, PopulationDensity: 8000, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 2700, AwarenessCampaigns: 14, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 26500, Year: 2023 },
-            { City: "Mysore", WasteType: "Construction", WasteGenerated: 1800, RecyclingRate: 48, PopulationDensity: 8000, MunicipalEfficiency: 8, DisposalMethod: "Landfill", Cost: 1300, AwarenessCampaigns: 12, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 26500, Year: 2023 },
-
-            { City: "Mysore", WasteType: "Plastic", WasteGenerated: 2400, RecyclingRate: 67, PopulationDensity: 8100, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 2350, AwarenessCampaigns: 19, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 27000, Year: 2024 },
-            { City: "Mysore", WasteType: "Organic", WasteGenerated: 2600, RecyclingRate: 73, PopulationDensity: 8100, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 1760, AwarenessCampaigns: 22, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 27000, Year: 2024 },
-            { City: "Mysore", WasteType: "E-Waste", WasteGenerated: 590, RecyclingRate: 66, PopulationDensity: 8100, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 2750, AwarenessCampaigns: 15, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 27000, Year: 2024 },
-            { City: "Mysore", WasteType: "Construction", WasteGenerated: 1850, RecyclingRate: 49, PopulationDensity: 8100, MunicipalEfficiency: 8, DisposalMethod: "Landfill", Cost: 1320, AwarenessCampaigns: 13, LandfillName: "Mysore Solid Waste Landfill", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 27000, Year: 2024 },
-                // ATME college Eng
-            // --- ATME College Waste Management Data (2019–2024) ---
-
-{ City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 45, RecyclingRate: 72, PopulationDensity: 3200, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 1900, AwarenessCampaigns: 8, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 850, Year: 2019 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Organic", WasteGenerated: 65, RecyclingRate: 78, PopulationDensity: 3200, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 1300, AwarenessCampaigns: 9, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 850, Year: 2019 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "E-Waste", WasteGenerated: 10, RecyclingRate: 70, PopulationDensity: 3200, MunicipalEfficiency: 10, DisposalMethod: "Authorized Collection", Cost: 2200, AwarenessCampaigns: 6, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 850, Year: 2019 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Construction", WasteGenerated: 30, RecyclingRate: 58, PopulationDensity: 3200, MunicipalEfficiency: 8, DisposalMethod: "Reuse & Landfill", Cost: 1100, AwarenessCampaigns: 5, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 850, Year: 2019 },
-
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 48, RecyclingRate: 74, PopulationDensity: 3250, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 1920, AwarenessCampaigns: 9, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 860, Year: 2020 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Organic", WasteGenerated: 70, RecyclingRate: 80, PopulationDensity: 3250, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 1320, AwarenessCampaigns: 10, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 860, Year: 2020 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "E-Waste", WasteGenerated: 12, RecyclingRate: 71, PopulationDensity: 3250, MunicipalEfficiency: 10, DisposalMethod: "Authorized Collection", Cost: 2250, AwarenessCampaigns: 7, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 860, Year: 2020 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Construction", WasteGenerated: 35, RecyclingRate: 59, PopulationDensity: 3250, MunicipalEfficiency: 8, DisposalMethod: "Reuse & Landfill", Cost: 1120, AwarenessCampaigns: 6, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 860, Year: 2020 },
-
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 52, RecyclingRate: 76, PopulationDensity: 3300, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 1950, AwarenessCampaigns: 10, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 870, Year: 2021 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Organic", WasteGenerated: 75, RecyclingRate: 82, PopulationDensity: 3300, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 1350, AwarenessCampaigns: 11, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 870, Year: 2021 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "E-Waste", WasteGenerated: 13, RecyclingRate: 73, PopulationDensity: 3300, MunicipalEfficiency: 10, DisposalMethod: "Authorized Collection", Cost: 2300, AwarenessCampaigns: 8, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 870, Year: 2021 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Construction", WasteGenerated: 40, RecyclingRate: 60, PopulationDensity: 3300, MunicipalEfficiency: 8, DisposalMethod: "Reuse & Landfill", Cost: 1150, AwarenessCampaigns: 7, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 870, Year: 2021 },
-
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 55, RecyclingRate: 78, PopulationDensity: 3350, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 1980, AwarenessCampaigns: 11, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 880, Year: 2022 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Organic", WasteGenerated: 80, RecyclingRate: 83, PopulationDensity: 3350, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 1370, AwarenessCampaigns: 12, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 880, Year: 2022 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "E-Waste", WasteGenerated: 14, RecyclingRate: 74, PopulationDensity: 3350, MunicipalEfficiency: 10, DisposalMethod: "Authorized Collection", Cost: 2320, AwarenessCampaigns: 9, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 880, Year: 2022 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Construction", WasteGenerated: 42, RecyclingRate: 61, PopulationDensity: 3350, MunicipalEfficiency: 8, DisposalMethod: "Reuse & Landfill", Cost: 1170, AwarenessCampaigns: 8, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 880, Year: 2022 },
-
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 58, RecyclingRate: 79, PopulationDensity: 3400, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 2000, AwarenessCampaigns: 12, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 890, Year: 2023 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Organic", WasteGenerated: 85, RecyclingRate: 85, PopulationDensity: 3400, MunicipalEfficiency: 10, DisposalMethod: "Composting", Cost: 1390, AwarenessCampaigns: 13, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 890, Year: 2023 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "E-Waste", WasteGenerated: 15, RecyclingRate: 76, PopulationDensity: 3400, MunicipalEfficiency: 10, DisposalMethod: "Authorized Collection", Cost: 2350, AwarenessCampaigns: 10, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 890, Year: 2023 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Construction", WasteGenerated: 45, RecyclingRate: 62, PopulationDensity: 3400, MunicipalEfficiency: 8, DisposalMethod: "Reuse & Landfill", Cost: 1200, AwarenessCampaigns: 9, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 890, Year: 2023 },
-
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 60, RecyclingRate: 80, PopulationDensity: 3450, MunicipalEfficiency: 10, DisposalMethod: "Recycling", Cost: 2020, AwarenessCampaigns: 13, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 900, Year: 2024 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Organic", WasteGenerated: 90, RecyclingRate: 86, PopulationDensity: 3450, MunicipalEfficiency: 10, DisposalMethod: "Composting", Cost: 1400, AwarenessCampaigns: 14, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 900, Year: 2024 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "E-Waste", WasteGenerated: 16, RecyclingRate: 77, PopulationDensity: 3450, MunicipalEfficiency: 10, DisposalMethod: "Authorized Collection", Cost: 2380, AwarenessCampaigns: 11, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 900, Year: 2024 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Construction", WasteGenerated: 48, RecyclingRate: 63, PopulationDensity: 3450, MunicipalEfficiency: 9, DisposalMethod: "Reuse & Landfill", Cost: 1220, AwarenessCampaigns: 10, LandfillName: "ATME Campus Waste Yard", Latitude: 12.2406, Longitude: 76.6714, LandfillCapacity: 900, Year: 2024 }
-
+            // ATME College of Engineering data
+            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 45, RecyclingRate: 72, PopulationDensity: 3200, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 1900, AwarenessCampaigns: 8, LandfillName: "ATME Campus Dustbin", Latitude: 12.3145, Longitude: 76.7709, LandfillCapacity: 850, Year: 2019 },
+            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 42, RecyclingRate: 100, PopulationDensity: 3200, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 1900, AwarenessCampaigns: 8, LandfillName: "ATME Campus Dustbin", Latitude: 12.3144, Longitude: 76.7703, LandfillCapacity: 850, Year: 2019 },
+            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 40, RecyclingRate: 72, PopulationDensity: 3200, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 1900, AwarenessCampaigns: 8, LandfillName: "ATME Campus Dustbin", Latitude: 12.3134, Longitude: 76.7701, LandfillCapacity: 850, Year: 2019 },
+            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Organic", WasteGenerated: 65, RecyclingRate: 78, PopulationDensity: 3200, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 1300, AwarenessCampaigns: 9, LandfillName: "ATME Campus Composting Facility", Latitude: 12.3245, Longitude: 76.7614, LandfillCapacity: 850, Year: 2019 },
+            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "E-Waste", WasteGenerated: 10, RecyclingRate: 70, PopulationDensity: 3200, MunicipalEfficiency: 10, DisposalMethod: "Authorized Collection", Cost: 2200, AwarenessCampaigns: 6, LandfillName: "ATME E-Waste Collection", Latitude: 12.3142, Longitude: 76.7810, LandfillCapacity: 850, Year: 2019 },
+            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Construction", WasteGenerated: 30, RecyclingRate: 58, PopulationDensity: 3200, MunicipalEfficiency: 8, DisposalMethod: "Reuse & Landfill", Cost: 1100, AwarenessCampaigns: 5, LandfillName: "ATME Construction Waste", Latitude: 12.3148, Longitude: 76.7712, LandfillCapacity: 850, Year: 2019 }
         ];
 
         // City coordinates for manual selection
@@ -1119,9 +1027,6 @@
                             });
                         }
 
-                        // Get address from coordinates
-                        getAddressFromCoords(userLat, userLng);
-
                         // Find nearby facilities
                         findNearbyFacilities();
                     },
@@ -1129,7 +1034,6 @@
                         // Error callback
                         console.error("Error getting location:", error);
                         gpsStatus.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#FF9800"></i><span>Could not detect location</span>';
-                        document.getElementById('currentAddress').textContent = "Location access denied or unavailable";
 
                         // Use default location (Delhi) and show all facilities
                         userLocation = cityCoordinates.delhi;
@@ -1144,99 +1048,11 @@
             } else {
                 // Geolocation not supported
                 gpsStatus.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#f44336"></i><span>Geolocation not supported by this browser</span>';
-                document.getElementById('currentAddress').textContent = "Geolocation not supported";
 
                 // Use default location (Delhi) and show all facilities
                 userLocation = cityCoordinates.delhi;
                 showAllFacilities();
             }
-        }
-
-        // Set manual location based on selected city
-        function setManualLocation() {
-            const modal = document.getElementById('manualLocationModal');
-            modal.style.display = 'flex';
-        }
-
-        // Confirm manual location
-        function confirmManualLocation() {
-            const city = document.getElementById('citySelect').value;
-            const address = document.getElementById('addressInput').value;
-
-            if (city) {
-                userLocation = cityCoordinates[city];
-
-                // Update address display
-                let displayAddress = cityCoordinates[city].name;
-                if (address.trim() !== '') {
-                    displayAddress = address + ', ' + displayAddress;
-                }
-                document.getElementById('currentAddress').textContent = displayAddress;
-
-                updateLocationUI();
-                findNearbyFacilities();
-                closeManualLocationModal();
-            } else {
-                alert('Please select a city');
-            }
-        }
-
-        // Update location UI after manual input
-        function updateLocationUI() {
-            const gpsStatus = document.getElementById('gpsStatus');
-            gpsStatus.innerHTML = '<i class="fas fa-map-marker-alt" style="color:#4CAF50"></i><span>Using manual location</span>';
-            document.getElementById('coordinates').textContent = `Lat: ${userLocation.lat.toFixed(4)}, Lng: ${userLocation.lng.toFixed(4)}`;
-
-            // Center map on user location if map is available
-            if (!mapError && map) {
-                map.setCenter(userLocation);
-                map.setZoom(12);
-
-                // Add user marker
-                if (userMarker) {
-                    userMarker.setMap(null);
-                }
-
-                userMarker = new google.maps.Marker({
-                    position: userLocation,
-                    map: map,
-                    title: "Your Location",
-                    icon: {
-                        url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
-                            <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="16" cy="16" r="12" fill="#2196F3" stroke="white" stroke-width="2"/>
-                                <circle cx="16" cy="16" r="6" fill="white"/>
-                            </svg>
-                        `),
-                        scaledSize: new google.maps.Size(32, 32),
-                        anchor: new google.maps.Point(16, 16)
-                    }
-                });
-            }
-        }
-
-        // Close manual location modal
-        function closeManualLocationModal() {
-            const modal = document.getElementById('manualLocationModal');
-            modal.style.display = 'none';
-            document.getElementById('citySelect').value = '';
-            document.getElementById('addressInput').value = '';
-        }
-
-        // Get address from coordinates using reverse geocoding
-        function getAddressFromCoords(lat, lng) {
-            // In a real application, you would use the Google Geocoding API here
-            // For this demo, we'll use a simulated response
-            setTimeout(() => {
-                // const addresses = [
-                //     "Connaught Place, New Delhi",
-                //     "Marine Drive, Mumbai",
-                //     "MG Road, Bangalore",
-                //     "Park Street, Kolkata"
-                // ];
-                const randomAddress = addresses[Math.floor(Math.random() * addresses.length)];
-                document.getElementById('currentAddress').textContent = randomAddress;
-            }, 1500);
         }
 
         // Update location time
@@ -1499,6 +1315,11 @@
         function updateStats(facilities) {
             const nearby = facilities.filter(f => f.distance && f.distance < 5).length;
             document.getElementById('nearbyFacilities').textContent = nearby;
+            document.getElementById('totalFacilities').textContent = wasteManagementData.length;
+            
+            // Count unique cities
+            const uniqueCities = [...new Set(wasteManagementData.map(item => item.City))];
+            document.getElementById('citiesCount').textContent = uniqueCities.length;
         }
 
         // Apply filter
@@ -1596,10 +1417,6 @@
             // Set up button event listeners
             document.getElementById('refreshLocationBtn').addEventListener('click', getUserLocation);
             document.getElementById('findNearestBtn').addEventListener('click', findNearbyFacilities);
-            document.getElementById('enterManualLocation').addEventListener('click', setManualLocation);
-            document.getElementById('confirmManualLocation').addEventListener('click', confirmManualLocation);
-            document.getElementById('closeModal').addEventListener('click', closeManualLocationModal);
-            document.getElementById('cancelManualLocation').addEventListener('click', closeManualLocationModal);
 
             // Set up filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
