@@ -413,8 +413,10 @@
         const suggestionChips = document.querySelectorAll('.chip');
 
         // Gemini API configuration - Using Gemini 2.0 Flash with your API key
-        const API_KEY = 'AIzaSyCNqt9MYDTLGrujC6xTzqQHnCLnwaCcssk';
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+        // const API_KEY = 'AIzaSyCNqt9MYDTLGrujC6xTzqQHnCLnwaCcssk';
+        const API_KEY = 'AIzaSyAR-BKU73DuejLLtHmKMaf7eEKqiVuSo1w';
+        // const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${APi_KEY}`
 
         // Speech synthesis variables
         let currentUtterance = null;
@@ -731,4 +733,5 @@
         }
     </script>
 </body>
+
 </html>
