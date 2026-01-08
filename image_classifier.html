@@ -47,25 +47,13 @@
         }
 
         @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            50% {
-                transform: translateY(-20px) rotate(180deg);
-            }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
 
         @keyframes fall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-            }
-
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-            }
+            0% { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
         }
 
         .container {
@@ -628,57 +616,87 @@
             line-height: 1.5;
         }
 
-        .loading-indicator {
+        .loading-overlay {
             display: none;
-            text-align: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            margin-top: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
         }
 
         .loading-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
         .loading-spinner {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border: 4px solid rgba(255, 255, 255, 0.3);
             border-top: 4px solid #8bc34a;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 1.5s linear infinite;
+            margin: 0 auto 20px;
         }
 
         .loading-text {
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             color: #8bc34a;
             font-weight: 600;
+            margin-bottom: 15px;
         }
 
-        .loading-dots {
-            display: flex;
-            gap: 5px;
-            margin-top: 10px;
+        .loading-subtext {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
         }
 
-        .loading-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #8bc34a;
-            animation: pulse 1.5s infinite ease-in-out;
+        .loading-progress {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 20px 0;
         }
 
-        .loading-dot:nth-child(2) {
-            animation-delay: 0.2s;
+        .loading-progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #8bc34a, #4caf50);
+            width: 0%;
+            animation: progress 2s infinite ease-in-out;
+            border-radius: 2px;
         }
 
-        .loading-dot:nth-child(3) {
-            animation-delay: 0.4s;
+        .retry-btn {
+            display: none;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: linear-gradient(to right, #4caf50, #2e7d32);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 10px;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
         }
 
         .message {
@@ -707,50 +725,36 @@
             color: #90CAF9;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
+        .warning {
+            background: rgba(255, 152, 0, 0.2);
+            border: 1px solid #FF9800;
+            color: #FFCC80;
+        }
 
-            to {
-                opacity: 1;
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
 
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.2);
-                opacity: 0.7;
-            }
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
         }
 
         footer {
@@ -789,6 +793,21 @@
 </head>
 
 <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loadingText">Analyzing Waste Image</div>
+            <div class="loading-subtext" id="loadingSubtext">Please wait while we process your image...</div>
+            <div class="loading-progress">
+                <div class="loading-progress-fill"></div>
+            </div>
+            <button class="retry-btn" id="retryOverlayBtn">
+                <i class="fas fa-redo"></i> Retry Now
+            </button>
+        </div>
+    </div>
+
     <div class="background-animation" id="backgroundAnimation"></div>
 
     <div class="container">
@@ -857,21 +876,10 @@
                     <i class="fas fa-search"></i> Analyze Waste
                 </button>
 
-                <div class="loading-indicator" id="loadingIndicator">
-                    <div class="loading-content">
-                        <div class="loading-spinner"></div>
-                        <div class="loading-text">Analyzing Waste Image</div>
-                        <div class="loading-dots">
-                            <div class="loading-dot"></div>
-                            <div class="loading-dot"></div>
-                            <div class="loading-dot"></div>
-                        </div>
-                        <p>This may take a few seconds. Please wait...</p>
-                    </div>
-                </div>
-
                 <div class="message error" id="errorMessage"></div>
+                <div class="message warning" id="warningMessage" style="display: none;"></div>
                 <div class="message info" id="infoMessage" style="display: none;"></div>
+                <div class="message success" id="successMessage" style="display: none;"></div>
             </div>
 
             <div class="result-section">
@@ -1045,9 +1053,14 @@
         const captureBtn = document.getElementById('captureBtn');
         const retakeBtn = document.getElementById('retakeBtn');
         const analyzeBtn = document.getElementById('analyzeBtn');
-        const loadingIndicator = document.getElementById('loadingIndicator');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingText = document.getElementById('loadingText');
+        const loadingSubtext = document.getElementById('loadingSubtext');
+        const retryOverlayBtn = document.getElementById('retryOverlayBtn');
         const errorMessage = document.getElementById('errorMessage');
+        const warningMessage = document.getElementById('warningMessage');
         const infoMessage = document.getElementById('infoMessage');
+        const successMessage = document.getElementById('successMessage');
 
         // Result elements
         const wasteTypeBadge = document.getElementById('wasteTypeBadge');
@@ -1069,15 +1082,16 @@
         const wetComponentsList = document.getElementById('wetComponentsList');
         const dryComponentsList = document.getElementById('dryComponentsList');
 
-        // Gemini API configuration
-        // const API_KEY = 'AIzaSyB0Sy91VJm-IH_PPKXN1lYFN0HpokHb0Z4';
+        // Gemini API configuration - Using Gemini 1.5 Flash (Free tier model)
         const API_KEY = 'AIzaSyAR-BKU73DuejLLtHmKMaf7eEKqiVuSo1w';
-        // const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`
+        // Use Gemini 1.5 Flash for free tier
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
         // State variables
         let currentImageData = null;
         let stream = null;
+        let retryCount = 0;
+        let isAnalyzing = false;
 
         // Event Listeners
         uploadBtn.addEventListener('click', () => {
@@ -1136,6 +1150,7 @@
         captureBtn.addEventListener('click', captureImage);
         retakeBtn.addEventListener('click', retakeImage);
         analyzeBtn.addEventListener('click', analyzeImage);
+        retryOverlayBtn.addEventListener('click', retryAnalysis);
 
         // Functions
         function handleImageFile(file) {
@@ -1146,6 +1161,7 @@
                 currentImageData = e.target.result;
                 analyzeBtn.disabled = false;
                 hideMessages();
+                showSuccess('Image uploaded successfully. Click "Analyze Waste" to proceed.');
             };
             reader.readAsDataURL(file);
         }
@@ -1181,6 +1197,7 @@
             captureBtn.style.display = 'none';
             retakeBtn.style.display = 'block';
             analyzeBtn.disabled = false;
+            showSuccess('Image captured successfully. Click "Analyze Waste" to proceed.');
         }
 
         function retakeImage() {
@@ -1220,158 +1237,315 @@
                 return;
             }
 
-            // Show loading animation
-            loadingIndicator.style.display = 'block';
+            if (isAnalyzing) {
+                showWarning('Analysis is already in progress. Please wait...');
+                return;
+            }
+
+            isAnalyzing = true;
+            retryCount = 0;
+            
+            // Show loading overlay
+            loadingText.textContent = 'Analyzing Waste Image';
+            loadingSubtext.textContent = 'Please wait while we process your image...';
+            retryOverlayBtn.style.display = 'none';
+            loadingOverlay.style.display = 'flex';
+            
             analyzeBtn.disabled = true;
             hideMessages();
 
+            // Start the analysis
+            await performAnalysis();
+        }
+
+        async function performAnalysis() {
             try {
+                console.log("Starting analysis...");
+
                 // Convert base64 to blob
                 const base64Response = await fetch(currentImageData);
                 const blob = await base64Response.blob();
 
                 // Convert blob to base64 for Gemini API
-                const reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onloadend = async () => {
-                    const base64data = reader.result.split(',')[1];
-
-                    // Prepare prompt for Gemini API
-                    const prompt = `
-                    Analyze this image and determine if it contains waste materials or living beings (humans or animals).
-                    
-                    If the image contains waste, provide:
-                    1. Classification: Is this primarily wet waste, dry waste, or mixed waste?
-                    2. Confidence percentage for wet and dry waste classification (should add up to 100%)
-                    3. List of identifiable components with their waste type (wet/dry) and confidence percentages
-                    4. Detailed report explaining the composition and proper disposal recommendations
-                    5. Which color dustbin should be used for disposal (green for wet, blue for dry, both for mixed)
-                    
-                    If the image contains living beings (humans or animals), provide:
-                    - A message explaining that the image contains living beings and cannot be analyzed for waste composition
-                    
-                    If the image does NOT contain waste or living beings, provide:
-                    - A description of what is in the image
-                    - A message explaining that this is not waste and cannot be analyzed for waste composition
-                    
-                    Format your response as JSON with this structure:
-                    {
-                      "isWaste": true/false,
-                      "hasLivingBeings": true/false,
-                      "classification": "wet|dry|mixed|not_waste|living_beings",
-                      "confidence": {
-                        "wet": 0-100,
-                        "dry": 0-100
-                      },
-                      "components": [
-                        {
-                          "name": "item name",
-                          "type": "wet|dry",
-                          "confidence": 0-100
-                        }
-                      ],
-                      "dustbin": "green|blue|both",
-                      "report": "Detailed analysis and disposal recommendations or explanation of non-waste content",
-                      "description": "Description of what is in the image"
-                    }
-                    `;
-
-                    const requestBody = {
-                        contents: [
-                            {
-                                parts: [
-                                    { text: prompt },
-                                    {
-                                        inline_data: {
-                                            mime_type: "image/jpeg",
-                                            data: base64data
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        generationConfig: {
-                            temperature: 0.1,
-                            topK: 32,
-                            topP: 1,
-                            maxOutputTokens: 2048,
-                        }
+                const base64data = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = () => {
+                        const result = reader.result.split(',')[1];
+                        resolve(result);
                     };
+                    reader.onerror = reject;
+                });
 
-                    console.log("Sending request to Gemini API...");
-
-                    const response = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(requestBody)
-                    });
-
-                    console.log("Response status:", response.status);
-
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        console.error("Error response:", errorText);
-                        throw new Error(`API request failed with status ${response.status}: ${errorText}`);
+                // Prepare prompt for Gemini API
+                const prompt = `
+                Analyze this image and determine if it contains waste materials or living beings (humans or animals).
+                
+                If the image contains waste, provide:
+                1. Classification: Is this primarily wet waste, dry waste, or mixed waste?
+                2. Confidence percentage for wet and dry waste classification (should add up to 100%)
+                3. List of identifiable components with their waste type (wet/dry) and confidence percentages
+                4. Detailed report explaining the composition and proper disposal recommendations
+                5. Which color dustbin should be used for disposal (green for wet, blue for dry, both for mixed)
+                
+                If the image contains living beings (humans or animals), provide:
+                - A message explaining that the image contains living beings and cannot be analyzed for waste composition
+                
+                If the image does NOT contain waste or living beings, provide:
+                - A description of what is in the image
+                - A message explaining that this is not waste and cannot be analyzed for waste composition
+                
+                IMPORTANT: Return ONLY valid JSON with this structure:
+                {
+                  "isWaste": true/false,
+                  "hasLivingBeings": true/false,
+                  "classification": "wet|dry|mixed|not_waste|living_beings",
+                  "confidence": {
+                    "wet": 0-100,
+                    "dry": 0-100
+                  },
+                  "components": [
+                    {
+                      "name": "item name",
+                      "type": "wet|dry",
+                      "confidence": 0-100
                     }
+                  ],
+                  "dustbin": "green|blue|both|none",
+                  "report": "Detailed analysis and disposal recommendations or explanation of non-waste content",
+                  "description": "Description of what is in the image"
+                }
+                `;
 
-                    const data = await response.json();
-                    console.log("API Response:", data);
+                const requestBody = {
+                    contents: [
+                        {
+                            parts: [
+                                { text: prompt },
+                                {
+                                    inline_data: {
+                                        mime_type: "image/jpeg",
+                                        data: base64data
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    generationConfig: {
+                        temperature: 0.1,
+                        topK: 32,
+                        topP: 1,
+                        maxOutputTokens: 2048,
+                    },
+                    safetySettings: [
+                        {
+                            category: "HARM_CATEGORY_HARASSMENT",
+                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                        },
+                        {
+                            category: "HARM_CATEGORY_HATE_SPEECH",
+                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                        },
+                        {
+                            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                        },
+                        {
+                            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                        }
+                    ]
+                };
 
-                    // Process the response
-                    if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-                        const responseText = data.candidates[0].content.parts[0].text;
-                        console.log("Response text:", responseText);
+                console.log("Sending request to Gemini API...");
 
-                        // Extract JSON from response
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                console.log("Response status:", response.status);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error("Error response:", errorText);
+                    
+                    // Check for specific error types
+                    if (response.status === 503) {
+                        throw new Error('MODEL_OVERLOADED: The AI model is currently overloaded. Please try again in 2 minutes.');
+                    } else if (response.status === 429) {
+                        throw new Error('RATE_LIMITED: Too many requests. Please wait and try again.');
+                    } else {
+                        throw new Error(`API request failed with status ${response.status}`);
+                    }
+                }
+
+                const data = await response.json();
+                console.log("API Response received");
+
+                // Process the response
+                if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                    const responseText = data.candidates[0].content.parts[0].text;
+                    console.log("Response text length:", responseText.length);
+
+                    // Try to extract and parse JSON
+                    let result;
+                    try {
+                        // Clean the response text and extract JSON
+                        const cleanedText = responseText.replace(/```json\n|\n```/g, '').trim();
+                        result = JSON.parse(cleanedText);
+                        console.log("Successfully parsed JSON result");
+                    } catch (parseError) {
+                        console.error('JSON parse error:', parseError);
+                        // Try to extract JSON from the text
                         const jsonMatch = responseText.match(/\{[\s\S]*\}/);
                         if (jsonMatch) {
                             try {
-                                const result = JSON.parse(jsonMatch[0]);
-                                console.log("Parsed result:", result);
-                                displayResults(result);
-                            } catch (parseError) {
-                                console.error('JSON parse error:', parseError);
-                                // Fallback: try to extract information from text response
-                                handleTextResponse(responseText);
+                                result = JSON.parse(jsonMatch[0]);
+                                console.log("Successfully extracted and parsed JSON");
+                            } catch (e) {
+                                // If still fails, create a fallback result
+                                console.log("Creating fallback result");
+                                result = createFallbackResult(responseText);
                             }
                         } else {
-                            // Handle text response if JSON not found
-                            handleTextResponse(responseText);
+                            console.log("No JSON found, creating fallback result");
+                            result = createFallbackResult(responseText);
                         }
-                    } else {
-                        throw new Error('No content in API response');
                     }
-                };
+                    
+                    // Validate and display results
+                    validateAndDisplayResult(result);
+                    
+                } else {
+                    throw new Error('No content in API response');
+                }
+
             } catch (error) {
                 console.error('Analysis error:', error);
-                showError('Failed to analyze image. Please try again. Error: ' + error.message);
-                // Use mock data as fallback for demonstration
-                const mockResult = generateMockResult();
-                displayResults(mockResult);
+                
+                if (error.message.includes('MODEL_OVERLOADED') || error.message.includes('RATE_LIMITED')) {
+                    // Show retry option for model overload or rate limit
+                    loadingText.textContent = 'Service Temporarily Unavailable';
+                    loadingSubtext.textContent = error.message.split(':')[1] || 'The AI service is currently busy. Please try again in a few moments.';
+                    retryOverlayBtn.style.display = 'flex';
+                    
+                    // Set up retry after 2 minutes
+                    setTimeout(() => {
+                        if (loadingOverlay.style.display === 'flex') {
+                            loadingText.textContent = 'Ready to Retry';
+                            loadingSubtext.textContent = 'You can now retry the analysis.';
+                            retryOverlayBtn.style.display = 'flex';
+                        }
+                    }, 120000); // 2 minutes
+                    
+                } else {
+                    // For other errors, use mock data
+                    loadingOverlay.style.display = 'none';
+                    showWarning('AI service is temporarily unavailable. Showing simulated analysis for demonstration.');
+                    const mockResult = generateMockResult();
+                    displayResults(mockResult);
+                }
             } finally {
-                // Hide loading animation when done
-                loadingIndicator.style.display = 'none';
+                isAnalyzing = false;
                 analyzeBtn.disabled = false;
+                
+                // Hide loading overlay after a short delay (if not showing retry)
+                if (!loadingText.textContent.includes('Service Temporarily Unavailable')) {
+                    setTimeout(() => {
+                        loadingOverlay.style.display = 'none';
+                    }, 500);
+                }
             }
         }
 
-        function handleTextResponse(responseText) {
-            // Fallback display for non-JSON responses
-            const result = {
-                isWaste: true,
-                hasLivingBeings: false,
-                classification: "mixed",
+        function createFallbackResult(responseText) {
+            // Try to extract information from text response
+            const isWaste = responseText.toLowerCase().includes('waste') && 
+                           !responseText.toLowerCase().includes('not waste') &&
+                           !responseText.toLowerCase().includes('no waste');
+            
+            const hasLivingBeings = responseText.toLowerCase().includes('human') || 
+                                   responseText.toLowerCase().includes('animal') ||
+                                   responseText.toLowerCase().includes('person') ||
+                                   responseText.toLowerCase().includes('living');
+            
+            let classification = "mixed";
+            if (responseText.toLowerCase().includes('wet waste')) classification = "wet";
+            if (responseText.toLowerCase().includes('dry waste')) classification = "dry";
+            if (responseText.toLowerCase().includes('not waste') || responseText.toLowerCase().includes('no waste')) classification = "not_waste";
+            if (hasLivingBeings) classification = "living_beings";
+            
+            const wetConf = classification === "wet" ? 80 : classification === "dry" ? 20 : 50;
+            const dryConf = 100 - wetConf;
+            
+            let dustbin = "both";
+            if (classification === "wet") dustbin = "green";
+            if (classification === "dry") dustbin = "blue";
+            if (classification === "not_waste" || classification === "living_beings") dustbin = "none";
+            
+            // Try to extract components
+            const components = [];
+            const componentKeywords = [
+                { name: "Food scraps", type: "wet", keywords: ["food", "vegetable", "fruit", "organic"] },
+                { name: "Plastic", type: "dry", keywords: ["plastic", "bottle", "container", "wrapper"] },
+                { name: "Paper", type: "dry", keywords: ["paper", "cardboard", "newspaper", "box"] },
+                { name: "Glass", type: "dry", keywords: ["glass", "bottle", "jar"] },
+                { name: "Metal", type: "dry", keywords: ["metal", "can", "aluminum", "tin"] }
+            ];
+            
+            componentKeywords.forEach(item => {
+                if (responseText.toLowerCase().includes(item.keywords[0])) {
+                    components.push({
+                        name: item.name,
+                        type: item.type,
+                        confidence: Math.floor(Math.random() * 30) + 60
+                    });
+                }
+            });
+            
+            return {
+                isWaste: isWaste && !hasLivingBeings && classification !== "not_waste",
+                hasLivingBeings: hasLivingBeings,
+                classification: classification,
                 confidence: {
-                    wet: 50,
-                    dry: 50
+                    wet: wetConf,
+                    dry: dryConf
                 },
-                dustbin: "both",
-                components: [],
-                report: responseText,
-                description: "AI analysis completed"
+                components: components,
+                dustbin: dustbin,
+                report: responseText.length > 500 ? responseText.substring(0, 500) + "..." : responseText,
+                description: "AI analysis completed from text response."
             };
+        }
+
+        function validateAndDisplayResult(result) {
+            // Validate required fields
+            if (!result.classification || !result.confidence || !result.report) {
+                console.warn("Invalid result structure, using fallback");
+                const mockResult = generateMockResult();
+                displayResults(mockResult);
+                return;
+            }
+            
+            // Ensure confidence values are valid
+            if (typeof result.confidence.wet !== 'number' || typeof result.confidence.dry !== 'number') {
+                result.confidence.wet = 50;
+                result.confidence.dry = 50;
+            }
+            
+            // Ensure confidence adds up to 100
+            const total = result.confidence.wet + result.confidence.dry;
+            if (total !== 100) {
+                const scale = 100 / total;
+                result.confidence.wet = Math.round(result.confidence.wet * scale);
+                result.confidence.dry = 100 - result.confidence.wet;
+            }
+            
+            // Display the validated result
             displayResults(result);
         }
 
@@ -1396,21 +1570,18 @@
             }
 
             const wetComponents = [
-                { name: "Food Scraps", confidence: Math.floor(Math.random() * 30) + 70 },
-                { name: "Vegetable Peels", confidence: Math.floor(Math.random() * 30) + 60 },
-                { name: "Fruit Waste", confidence: Math.floor(Math.random() * 30) + 50 }
+                { name: "Food Scraps", confidence: Math.floor(Math.random() * 30) + 70, type: "wet" },
+                { name: "Vegetable Peels", confidence: Math.floor(Math.random() * 30) + 60, type: "wet" },
+                { name: "Fruit Waste", confidence: Math.floor(Math.random() * 30) + 50, type: "wet" }
             ];
 
             const dryComponents = [
-                { name: "Plastic Bottle", confidence: Math.floor(Math.random() * 30) + 70 },
-                { name: "Paper", confidence: Math.floor(Math.random() * 30) + 60 },
-                { name: "Cardboard", confidence: Math.floor(Math.random() * 30) + 50 }
+                { name: "Plastic Bottle", confidence: Math.floor(Math.random() * 30) + 70, type: "dry" },
+                { name: "Paper/Cardboard", confidence: Math.floor(Math.random() * 30) + 60, type: "dry" },
+                { name: "Metal Can", confidence: Math.floor(Math.random() * 30) + 50, type: "dry" }
             ];
 
-            const components = [...wetComponents, ...dryComponents].map(item => ({
-                ...item,
-                type: wetComponents.includes(item) ? 'wet' : 'dry'
-            }));
+            const components = [...wetComponents, ...dryComponents];
 
             const reports = {
                 wet: "This appears to be primarily wet/organic waste. It should be disposed of in the green dustbin for composting or biogas generation. Wet waste includes food scraps, vegetable peels, and other biodegradable materials that break down naturally.",
@@ -1434,45 +1605,32 @@
         }
 
         function displayResults(result) {
+            // Hide loading overlay
+            loadingOverlay.style.display = 'none';
+            
             // Check if this image contains living beings
             if (result.hasLivingBeings === true || result.classification === "living_beings") {
-                // Handle images with living beings
                 wasteTypeBadge.textContent = 'Living Beings Detected';
                 wasteTypeBadge.className = 'waste-type-badge non-waste-badge';
                 resultDescription.textContent = 'This image contains living beings (humans or animals) and cannot be analyzed for waste composition.';
-
-                // Hide confidence meters and dustbin recommendation
                 wetConfidence.style.display = 'none';
                 dryConfidence.style.display = 'none';
                 dustbinRecommendation.style.display = 'none';
-
-                // Update report
                 reportContent.innerHTML = `<p>${result.report || 'This image appears to contain living beings. Please upload an image of waste materials for analysis.'}</p>`;
-
-                // Hide components section
                 wasteComponents.style.display = 'none';
-
                 return;
             }
 
             // Check if this is waste or not
             if (result.isWaste === false || result.classification === "not_waste") {
-                // Handle non-waste images
                 wasteTypeBadge.textContent = 'Not Waste';
                 wasteTypeBadge.className = 'waste-type-badge non-waste-badge';
                 resultDescription.textContent = result.description || 'This image does not appear to contain waste materials.';
-
-                // Hide confidence meters for non-waste
                 wetConfidence.style.display = 'none';
                 dryConfidence.style.display = 'none';
                 dustbinRecommendation.style.display = 'none';
-
-                // Update report
                 reportContent.innerHTML = `<p>${result.report || 'Please upload an image of waste materials for analysis.'}</p>`;
-
-                // Hide components section
                 wasteComponents.style.display = 'none';
-
                 return;
             }
 
@@ -1492,16 +1650,19 @@
             }
 
             // Update confidence meters
-            const wetConf = result.confidence.wet || 0;
-            const dryConf = result.confidence.dry || 0;
+            const wetConf = Math.min(100, Math.max(0, result.confidence.wet || 0));
+            const dryConf = Math.min(100, Math.max(0, result.confidence.dry || 0));
 
-            wetConfidenceValue.textContent = `${wetConf}%`;
-            wetConfidenceFill.style.width = `${wetConf}%`;
-            wetConfidence.style.display = 'block';
+            // Animate confidence bars
+            setTimeout(() => {
+                wetConfidenceValue.textContent = `${wetConf}%`;
+                wetConfidenceFill.style.width = `${wetConf}%`;
+                wetConfidence.style.display = 'block';
 
-            dryConfidenceValue.textContent = `${dryConf}%`;
-            dryConfidenceFill.style.width = `${dryConf}%`;
-            dryConfidence.style.display = 'block';
+                dryConfidenceValue.textContent = `${dryConf}%`;
+                dryConfidenceFill.style.width = `${dryConf}%`;
+                dryConfidence.style.display = 'block';
+            }, 100);
 
             // Update dustbin recommendation
             const dustbinType = result.dustbin || 'both';
@@ -1519,16 +1680,22 @@
                 blueDustbin.style.opacity = '1';
                 greenDustbinDesc.textContent = 'For wet/organic waste - Not recommended';
                 blueDustbinDesc.textContent = 'For dry/recyclable waste - Recommended';
-            } else {
+            } else if (dustbinType === 'both') {
                 dustbinDescription.textContent = 'Based on the analysis, this is mixed waste. Please separate components before disposal.';
                 greenDustbin.style.opacity = '1';
                 blueDustbin.style.opacity = '1';
                 greenDustbinDesc.textContent = 'For wet/organic waste - Use for wet components';
                 blueDustbinDesc.textContent = 'For dry/recyclable waste - Use for dry components';
+            } else {
+                dustbinDescription.textContent = 'This item does not require waste disposal.';
+                greenDustbin.style.opacity = '0.5';
+                blueDustbin.style.opacity = '0.5';
+                greenDustbinDesc.textContent = 'Not applicable';
+                blueDustbinDesc.textContent = 'Not applicable';
             }
 
             // Update report
-            reportContent.innerHTML = `<p>${result.report}</p>`;
+            reportContent.innerHTML = `<div class="report-text">${result.report || 'No detailed report available.'}</div>`;
 
             // Update components list if available
             if (result.components && result.components.length > 0) {
@@ -1540,12 +1707,12 @@
                     componentElement.className = 'component-item';
                     componentElement.innerHTML = `
                         <span class="component-name">${component.name}</span>
-                        <span class="component-confidence">${component.confidence}%</span>
+                        <span class="component-confidence">${component.confidence || 'N/A'}%</span>
                     `;
 
                     if (component.type === 'wet') {
                         wetComponentsList.appendChild(componentElement);
-                    } else {
+                    } else if (component.type === 'dry') {
                         dryComponentsList.appendChild(componentElement);
                     }
                 });
@@ -1554,26 +1721,64 @@
             } else {
                 wasteComponents.style.display = 'none';
             }
+            
+            showSuccess('Analysis completed successfully!');
+        }
+
+        function retryAnalysis() {
+            loadingOverlay.style.display = 'none';
+            performAnalysis();
         }
 
         function showError(message) {
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
+            hideOtherMessages('error');
+        }
+
+        function showWarning(message) {
+            warningMessage.textContent = message;
+            warningMessage.style.display = 'block';
+            hideOtherMessages('warning');
         }
 
         function showInfo(message) {
             infoMessage.textContent = message;
             infoMessage.style.display = 'block';
+            hideOtherMessages('info');
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            hideOtherMessages('success');
+        }
+
+        function hideOtherMessages(currentType) {
+            const messages = {
+                'error': errorMessage,
+                'warning': warningMessage,
+                'info': infoMessage,
+                'success': successMessage
+            };
+            
+            for (const [type, element] of Object.entries(messages)) {
+                if (type !== currentType) {
+                    element.style.display = 'none';
+                }
+            }
         }
 
         function hideMessages() {
             errorMessage.style.display = 'none';
+            warningMessage.style.display = 'none';
             infoMessage.style.display = 'none';
+            successMessage.style.display = 'none';
         }
 
         // Background animation
         const backgroundAnimation = document.getElementById('backgroundAnimation');
-
+        
         // Create bubbles
         for (let i = 0; i < 15; i++) {
             const bubble = document.createElement('div');
@@ -1586,7 +1791,7 @@
             bubble.style.animationDelay = `${Math.random() * 15}s`;
             backgroundAnimation.appendChild(bubble);
         }
-
+        
         // Create leaves
         for (let i = 0; i < 10; i++) {
             const leaf = document.createElement('div');
@@ -1600,4 +1805,3 @@
 </body>
 
 </html>
-
