@@ -47,25 +47,13 @@
         }
 
         @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            50% {
-                transform: translateY(-20px) rotate(180deg);
-            }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
 
         @keyframes fall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-            }
-
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-            }
+            0% { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
         }
 
         .container {
@@ -284,46 +272,6 @@
             transform: translateY(-2px);
         }
 
-        .manual-location-input {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-
-        .manual-location-input h3 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .input-group input,
-        .input-group select {
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1rem;
-        }
-
-        .input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
         .locations-list {
             flex: 1;
             overflow-y: auto;
@@ -487,49 +435,23 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.2);
-                opacity: 0.7;
-            }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
         }
 
         footer {
@@ -705,6 +627,39 @@
             font-size: 0.7rem;
             opacity: 0.8;
         }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .success-message {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .warning-message {
+            background: rgba(255, 152, 0, 0.2);
+            border: 1px solid #FF9800;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
     </style>
 </head>
 
@@ -729,8 +684,7 @@
 
         <section class="page-header">
             <h2>Indian Waste Management Tracker</h2>
-            <p>Find waste disposal points, recycling centers, and dustbins across major Indian cities using real data.
-            </p>
+            <p>Find waste disposal points, recycling centers, and dustbins across major Indian cities using real data.</p>
         </section>
 
         <div class="tracking-container">
@@ -759,6 +713,8 @@
                     <span>Detecting your location...</span>
                 </div>
 
+                <div id="statusMessage"></div>
+
                 <div class="location-info" id="locationInfo">
                     <div class="location-header">
                         <i class="fas fa-map-marker-alt"></i>
@@ -767,6 +723,7 @@
                     <div class="location-details">
                         <p><i class="fas fa-clock"></i> <span id="locationTime">--:--:--</span></p>
                         <p><i class="fas fa-satellite"></i> <span id="coordinates">Lat: --, Lng: --</span></p>
+                        <p><i class="fas fa-city"></i> <span id="cityName">Default Location (ATME College)</span></p>
                     </div>
                 </div>
 
@@ -814,7 +771,7 @@
                             </div>
                         </div>
                         <div class="location-details">
-                            Please allow location access or select a city manually to find nearby waste facilities.
+                            Please allow location access to find nearby waste facilities. Using default location for now.
                         </div>
                     </div>
                 </div>
@@ -830,8 +787,7 @@
                     <span>Binify ECO Route</span>
                 </div>
                 <p>&copy; 2023 Binify ECO Route Waste Management Solutions. All rights reserved.</p>
-                <p style="font-size: 0.8rem; opacity: 0.7;">Data based on Waste Management and Recycling India dataset
-                </p>
+                <p style="font-size: 0.8rem; opacity: 0.7;">Data based on Waste Management and Recycling India dataset</p>
             </div>
         </footer>
     </div>
@@ -850,78 +806,46 @@
             { City: "Mumbai", WasteType: "E-Waste", WasteGenerated: 8162, RecyclingRate: 53, PopulationDensity: 11191, MunicipalEfficiency: 8, DisposalMethod: "Incineration", Cost: 3390, AwarenessCampaigns: 13, LandfillName: "Mumbai West Dustbin", Latitude: 19.0660, Longitude: 72.8677, LandfillCapacity: 45575, Year: 2019 },
             { City: "Mumbai", WasteType: "Construction", WasteGenerated: 8929, RecyclingRate: 56, PopulationDensity: 11191, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1498, AwarenessCampaigns: 14, LandfillName: "Mumbai North Dustbin", Latitude: 19.0960, Longitude: 72.8477, LandfillCapacity: 45575, Year: 2019 },
             { City: "Mumbai", WasteType: "Hazardous", WasteGenerated: 5032, RecyclingRate: 44, PopulationDensity: 11191, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2221, AwarenessCampaigns: 16, LandfillName: "Mumbai East Dustbin", Latitude: 19.0760, Longitude: 72.8977, LandfillCapacity: 45575, Year: 2019 },
-            { City: "Mumbai", WasteType: "Plastic", WasteGenerated: 7456, RecyclingRate: 73, PopulationDensity: 11191, MunicipalEfficiency: 9, DisposalMethod: "Landfill", Cost: 3195, AwarenessCampaigns: 6, LandfillName: "Mumbai Central Recycling Center", Latitude: 19.0660, Longitude: 72.8577, LandfillCapacity: 45575, Year: 2020 },
-            { City: "Mumbai", WasteType: "Organic", WasteGenerated: 7118, RecyclingRate: 37, PopulationDensity: 11191, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 3686, AwarenessCampaigns: 14, LandfillName: "Mumbai Organic Waste Facility", Latitude: 19.0860, Longitude: 72.8677, LandfillCapacity: 45575, Year: 2020 },
-            { City: "Mumbai", WasteType: "E-Waste", WasteGenerated: 9189, RecyclingRate: 57, PopulationDensity: 11191, MunicipalEfficiency: 10, DisposalMethod: "Landfill", Cost: 1791, AwarenessCampaigns: 12, LandfillName: "Mumbai E-Waste Center", Latitude: 19.0960, Longitude: 72.8777, LandfillCapacity: 45575, Year: 2020 },
 
             // Delhi data
             { City: "Delhi", WasteType: "Plastic", WasteGenerated: 5820, RecyclingRate: 62, PopulationDensity: 11320, MunicipalEfficiency: 8, DisposalMethod: "Recycling", Cost: 2980, AwarenessCampaigns: 18, LandfillName: "Delhi Central Dustbin", Latitude: 28.6139, Longitude: 77.2090, LandfillCapacity: 52000, Year: 2019 },
             { City: "Delhi", WasteType: "Organic", WasteGenerated: 3250, RecyclingRate: 48, PopulationDensity: 11320, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 2450, AwarenessCampaigns: 15, LandfillName: "Delhi South Dustbin", Latitude: 28.6039, Longitude: 77.1990, LandfillCapacity: 52000, Year: 2019 },
-            { City: "Delhi", WasteType: "E-Waste", WasteGenerated: 2100, RecyclingRate: 45, PopulationDensity: 11320, MunicipalEfficiency: 7, DisposalMethod: "Incineration", Cost: 3150, AwarenessCampaigns: 12, LandfillName: "Delhi West Dustbin", Latitude: 28.6239, Longitude: 77.1890, LandfillCapacity: 52000, Year: 2019 },
-            { City: "Delhi", WasteType: "Construction", WasteGenerated: 4850, RecyclingRate: 52, PopulationDensity: 11320, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1650, AwarenessCampaigns: 10, LandfillName: "Delhi North Dustbin", Latitude: 28.6339, Longitude: 77.2190, LandfillCapacity: 52000, Year: 2019 },
-            { City: "Delhi", WasteType: "Hazardous", WasteGenerated: 1200, RecyclingRate: 38, PopulationDensity: 11320, MunicipalEfficiency: 6, DisposalMethod: "Recycling", Cost: 2850, AwarenessCampaigns: 14, LandfillName: "Delhi East Dustbin", Latitude: 28.6039, Longitude: 77.2290, LandfillCapacity: 52000, Year: 2019 },
 
             // Bangalore data
             { City: "Bangalore", WasteType: "Plastic", WasteGenerated: 4200, RecyclingRate: 65, PopulationDensity: 10854, MunicipalEfficiency: 8, DisposalMethod: "Recycling", Cost: 2750, AwarenessCampaigns: 16, LandfillName: "Bangalore Central Dustbin", Latitude: 12.9716, Longitude: 77.5946, LandfillCapacity: 38500, Year: 2019 },
             { City: "Bangalore", WasteType: "Organic", WasteGenerated: 2800, RecyclingRate: 55, PopulationDensity: 10854, MunicipalEfficiency: 7, DisposalMethod: "Composting", Cost: 2200, AwarenessCampaigns: 13, LandfillName: "Bangalore South Dustbin", Latitude: 12.9616, Longitude: 77.5846, LandfillCapacity: 38500, Year: 2019 },
-            { City: "Bangalore", WasteType: "E-Waste", WasteGenerated: 1500, RecyclingRate: 60, PopulationDensity: 10854, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 3050, AwarenessCampaigns: 11, LandfillName: "Bangalore West Dustbin", Latitude: 12.9816, Longitude: 77.5746, LandfillCapacity: 38500, Year: 2019 },
-            { City: "Bangalore", WasteType: "Construction", WasteGenerated: 3200, RecyclingRate: 50, PopulationDensity: 10854, MunicipalEfficiency: 6, DisposalMethod: "Landfill", Cost: 1800, AwarenessCampaigns: 9, LandfillName: "Bangalore North Dustbin", Latitude: 12.9916, Longitude: 77.6046, LandfillCapacity: 38500, Year: 2019 },
 
             // Chennai data
             { City: "Chennai", WasteType: "Plastic", WasteGenerated: 3800, RecyclingRate: 58, PopulationDensity: 10687, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2650, AwarenessCampaigns: 14, LandfillName: "Chennai Central Dustbin", Latitude: 13.0827, Longitude: 80.2707, LandfillCapacity: 42000, Year: 2019 },
             { City: "Chennai", WasteType: "Organic", WasteGenerated: 2400, RecyclingRate: 52, PopulationDensity: 10687, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 2100, AwarenessCampaigns: 12, LandfillName: "Chennai South Dustbin", Latitude: 13.0727, Longitude: 80.2607, LandfillCapacity: 42000, Year: 2019 },
-            { City: "Chennai", WasteType: "E-Waste", WasteGenerated: 1100, RecyclingRate: 48, PopulationDensity: 10687, MunicipalEfficiency: 7, DisposalMethod: "Incineration", Cost: 2950, AwarenessCampaigns: 10, LandfillName: "Chennai West Dustbin", Latitude: 13.0927, Longitude: 80.2507, LandfillCapacity: 42000, Year: 2019 },
-            { City: "Chennai", WasteType: "Construction", WasteGenerated: 2900, RecyclingRate: 45, PopulationDensity: 10687, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1700, AwarenessCampaigns: 8, LandfillName: "Chennai North Dustbin", Latitude: 13.1027, Longitude: 80.2807, LandfillCapacity: 42000, Year: 2019 },
 
             // Kolkata data
             { City: "Kolkata", WasteType: "Plastic", WasteGenerated: 3500, RecyclingRate: 54, PopulationDensity: 10467, MunicipalEfficiency: 6, DisposalMethod: "Recycling", Cost: 2550, AwarenessCampaigns: 13, LandfillName: "Kolkata Central Dustbin", Latitude: 22.5726, Longitude: 88.3639, LandfillCapacity: 39500, Year: 2019 },
-            { City: "Kolkata", WasteType: "Organic", WasteGenerated: 2100, RecyclingRate: 49, PopulationDensity: 10467, MunicipalEfficiency: 5, DisposalMethod: "Composting", Cost: 2000, AwarenessCampaigns: 11, LandfillName: "Kolkata South Dustbin", Latitude: 22.5626, Longitude: 88.3539, LandfillCapacity: 39500, Year: 2019 },
-            { City: "Kolkata", WasteType: "E-Waste", WasteGenerated: 900, RecyclingRate: 42, PopulationDensity: 10467, MunicipalEfficiency: 6, DisposalMethod: "Incineration", Cost: 2850, AwarenessCampaigns: 9, LandfillName: "Kolkata West Dustbin", Latitude: 22.5826, Longitude: 88.3439, LandfillCapacity: 39500, Year: 2019 },
-            { City: "Kolkata", WasteType: "Construction", WasteGenerated: 2600, RecyclingRate: 40, PopulationDensity: 10467, MunicipalEfficiency: 4, DisposalMethod: "Landfill", Cost: 1600, AwarenessCampaigns: 7, LandfillName: "Kolkata North Dustbin", Latitude: 22.5926, Longitude: 88.3739, LandfillCapacity: 39500, Year: 2019 },
 
             // Hyderabad data
             { City: "Hyderabad", WasteType: "Plastic", WasteGenerated: 3200, RecyclingRate: 61, PopulationDensity: 10234, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2450, AwarenessCampaigns: 15, LandfillName: "Hyderabad Central Dustbin", Latitude: 17.3850, Longitude: 78.4867, LandfillCapacity: 36500, Year: 2019 },
-            { City: "Hyderabad", WasteType: "Organic", WasteGenerated: 1900, RecyclingRate: 53, PopulationDensity: 10234, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 1900, AwarenessCampaigns: 12, LandfillName: "Hyderabad South Dustbin", Latitude: 17.3750, Longitude: 78.4767, LandfillCapacity: 36500, Year: 2019 },
-            { City: "Hyderabad", WasteType: "E-Waste", WasteGenerated: 800, RecyclingRate: 55, PopulationDensity: 10234, MunicipalEfficiency: 8, DisposalMethod: "Incineration", Cost: 2750, AwarenessCampaigns: 10, LandfillName: "Hyderabad West Dustbin", Latitude: 17.3950, Longitude: 78.4667, LandfillCapacity: 36500, Year: 2019 },
-            { City: "Hyderabad", WasteType: "Construction", WasteGenerated: 2300, RecyclingRate: 47, PopulationDensity: 10234, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1500, AwarenessCampaigns: 8, LandfillName: "Hyderabad North Dustbin", Latitude: 17.4050, Longitude: 78.4967, LandfillCapacity: 36500, Year: 2019 },
 
             // Ahmedabad data
             { City: "Ahmedabad", WasteType: "Plastic", WasteGenerated: 2800, RecyclingRate: 59, PopulationDensity: 9876, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2350, AwarenessCampaigns: 14, LandfillName: "Ahmedabad Central Dustbin", Latitude: 23.0225, Longitude: 72.5714, LandfillCapacity: 34000, Year: 2019 },
-            { City: "Ahmedabad", WasteType: "Organic", WasteGenerated: 1700, RecyclingRate: 51, PopulationDensity: 9876, MunicipalEfficiency: 6, DisposalMethod: "Composting", Cost: 1800, AwarenessCampaigns: 11, LandfillName: "Ahmedabad South Dustbin", Latitude: 23.0125, Longitude: 72.5614, LandfillCapacity: 34000, Year: 2019 },
-            { City: "Ahmedabad", WasteType: "E-Waste", WasteGenerated: 700, RecyclingRate: 46, PopulationDensity: 9876, MunicipalEfficiency: 7, DisposalMethod: "Incineration", Cost: 2650, AwarenessCampaigns: 9, LandfillName: "Ahmedabad West Dustbin", Latitude: 23.0325, Longitude: 72.5514, LandfillCapacity: 34000, Year: 2019 },
-            { City: "Ahmedabad", WasteType: "Construction", WasteGenerated: 2000, RecyclingRate: 43, PopulationDensity: 9876, MunicipalEfficiency: 5, DisposalMethod: "Landfill", Cost: 1400, AwarenessCampaigns: 7, LandfillName: "Ahmedabad North Dustbin", Latitude: 23.0425, Longitude: 72.5814, LandfillCapacity: 34000, Year: 2019 },
 
             // Pune data
             { City: "Pune", WasteType: "Plastic", WasteGenerated: 2500, RecyclingRate: 63, PopulationDensity: 9456, MunicipalEfficiency: 8, DisposalMethod: "Recycling", Cost: 2250, AwarenessCampaigns: 16, LandfillName: "Pune Central Dustbin", Latitude: 18.5204, Longitude: 73.8567, LandfillCapacity: 31500, Year: 2019 },
-            { City: "Pune", WasteType: "Organic", WasteGenerated: 1500, RecyclingRate: 54, PopulationDensity: 9456, MunicipalEfficiency: 7, DisposalMethod: "Composting", Cost: 1700, AwarenessCampaigns: 13, LandfillName: "Pune South Dustbin", Latitude: 18.5104, Longitude: 73.8467, LandfillCapacity: 31500, Year: 2019 },
-            { City: "Pune", WasteType: "E-Waste", WasteGenerated: 600, RecyclingRate: 58, PopulationDensity: 9456, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 2550, AwarenessCampaigns: 11, LandfillName: "Pune West Dustbin", Latitude: 18.5304, Longitude: 73.8367, LandfillCapacity: 31500, Year: 2019 },
-            { City: "Pune", WasteType: "Construction", WasteGenerated: 1800, RecyclingRate: 48, PopulationDensity: 9456, MunicipalEfficiency: 6, DisposalMethod: "Landfill", Cost: 1300, AwarenessCampaigns: 9, LandfillName: "Pune North Dustbin", Latitude: 18.5404, Longitude: 73.8667, LandfillCapacity: 31500, Year: 2019 },
 
             // Mysore data
             { City: "Mysore", WasteType: "Plastic", WasteGenerated: 1800, RecyclingRate: 59, PopulationDensity: 7600, MunicipalEfficiency: 7, DisposalMethod: "Recycling", Cost: 2100, AwarenessCampaigns: 14, LandfillName: "Mysore Central Dustbin", Latitude: 12.2958, Longitude: 76.6394, LandfillCapacity: 24800, Year: 2019 },
             { City: "Mysore", WasteType: "Organic", WasteGenerated: 2200, RecyclingRate: 68, PopulationDensity: 7600, MunicipalEfficiency: 8, DisposalMethod: "Composting", Cost: 1650, AwarenessCampaigns: 17, LandfillName: "Mysore South Dustbin", Latitude: 12.2858, Longitude: 76.6294, LandfillCapacity: 24800, Year: 2019 },
-            { City: "Mysore", WasteType: "E-Waste", WasteGenerated: 450, RecyclingRate: 61, PopulationDensity: 7600, MunicipalEfficiency: 9, DisposalMethod: "Incineration", Cost: 2500, AwarenessCampaigns: 10, LandfillName: "Mysore West Dustbin", Latitude: 12.3058, Longitude: 76.6194, LandfillCapacity: 24800, Year: 2019 },
-            { City: "Mysore", WasteType: "Construction", WasteGenerated: 1600, RecyclingRate: 44, PopulationDensity: 7600, MunicipalEfficiency: 6, DisposalMethod: "Landfill", Cost: 1200, AwarenessCampaigns: 8, LandfillName: "Mysore North Dustbin", Latitude: 12.3158, Longitude: 76.6494, LandfillCapacity: 24800, Year: 2019 },
 
             // ATME College of Engineering data
             { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 45, RecyclingRate: 72, PopulationDensity: 3200, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 1900, AwarenessCampaigns: 8, LandfillName: "ATME Campus Dustbin", Latitude: 12.3145, Longitude: 76.7709, LandfillCapacity: 850, Year: 2019 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 42, RecyclingRate: 100, PopulationDensity: 3200, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 1900, AwarenessCampaigns: 8, LandfillName: "ATME Campus Dustbin", Latitude: 12.3144, Longitude: 76.7703, LandfillCapacity: 850, Year: 2019 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Plastic", WasteGenerated: 40, RecyclingRate: 72, PopulationDensity: 3200, MunicipalEfficiency: 9, DisposalMethod: "Recycling", Cost: 1900, AwarenessCampaigns: 8, LandfillName: "ATME Campus Dustbin", Latitude: 12.3134, Longitude: 76.7701, LandfillCapacity: 850, Year: 2019 },
             { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Organic", WasteGenerated: 65, RecyclingRate: 78, PopulationDensity: 3200, MunicipalEfficiency: 9, DisposalMethod: "Composting", Cost: 1300, AwarenessCampaigns: 9, LandfillName: "ATME Campus Composting Facility", Latitude: 12.3245, Longitude: 76.7614, LandfillCapacity: 850, Year: 2019 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "E-Waste", WasteGenerated: 10, RecyclingRate: 70, PopulationDensity: 3200, MunicipalEfficiency: 10, DisposalMethod: "Authorized Collection", Cost: 2200, AwarenessCampaigns: 6, LandfillName: "ATME E-Waste Collection", Latitude: 12.3142, Longitude: 76.7810, LandfillCapacity: 850, Year: 2019 },
-            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "Construction", WasteGenerated: 30, RecyclingRate: 58, PopulationDensity: 3200, MunicipalEfficiency: 8, DisposalMethod: "Reuse & Landfill", Cost: 1100, AwarenessCampaigns: 5, LandfillName: "ATME Construction Waste", Latitude: 12.3148, Longitude: 76.7712, LandfillCapacity: 850, Year: 2019 }
+            { City: "Mysore", Institution: "ATME College of Engineering", WasteType: "E-Waste", WasteGenerated: 10, RecyclingRate: 70, PopulationDensity: 3200, MunicipalEfficiency: 10, DisposalMethod: "Authorized Collection", Cost: 2200, AwarenessCampaigns: 6, LandfillName: "ATME E-Waste Collection", Latitude: 12.3142, Longitude: 76.7810, LandfillCapacity: 850, Year: 2019 }
         ];
 
-        // City coordinates for manual selection
-        const cityCoordinates = {
-            delhi: { lat: 28.6139, lng: 77.2090, name: "Delhi" },
-            mumbai: { lat: 19.0760, lng: 72.8777, name: "Mumbai" },
-            bangalore: { lat: 12.9716, lng: 77.5946, name: "Bangalore" },
-            chennai: { lat: 13.0827, lng: 80.2707, name: "Chennai" },
-            kolkata: { lat: 22.5726, lng: 88.3639, name: "Kolkata" },
-            hyderabad: { lat: 17.3850, lng: 78.4867, name: "Hyderabad" },
-            ahmedabad: { lat: 23.0225, lng: 72.5714, name: "Ahmedabad" },
-            pune: { lat: 18.5204, lng: 73.8567, name: "Pune" }
+        // Default location (ATME College)
+        const defaultLocation = { 
+            lat: 12.3145, 
+            lng: 76.7709, 
+            name: "ATME College of Engineering, Mysore" 
         };
 
         // Global variables
@@ -932,17 +856,24 @@
         let infoWindow;
         let mapError = false;
         let currentFilter = "all";
+        let geolocationWatchId = null;
 
         // Initialize the map
         function initMap() {
-            // Default center (India)
-            const defaultCenter = { lat: 22.9734, lng: 78.6569 };
+            console.log("Initializing map...");
+            
+            // Use default location as initial center
+            const initialCenter = defaultLocation;
 
             try {
-                // Create map
+                // Create map with better error handling
                 map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 5,
-                    center: defaultCenter,
+                    zoom: 12,
+                    center: initialCenter,
+                    mapTypeControl: true,
+                    streetViewControl: false,
+                    fullscreenControl: true,
+                    zoomControl: true,
                     styles: [
                         {
                             "featureType": "poi",
@@ -951,114 +882,244 @@
                     ]
                 });
 
+                console.log("Map created successfully");
+                
                 // Create info window
                 infoWindow = new google.maps.InfoWindow();
 
-                // Try to get user's location
+                // Add default location marker
+                addUserMarker(initialCenter, "Default Location (ATME College)");
+                userLocation = initialCenter;
+                
+                // Show all facilities initially
+                setTimeout(() => {
+                    showAllFacilities();
+                    updateLocationDisplay(initialCenter, "Default Location (ATME College)");
+                    showStatusMessage("Using default location: ATME College of Engineering, Mysore", "info");
+                }, 500);
+
+                // Try to get user's location with a timeout
                 getUserLocation();
+
             } catch (error) {
                 console.error("Error initializing map:", error);
-                showMapError();
+                showMapError("Failed to initialize map. Please check your internet connection.");
             }
         }
 
         // Show map error message
-        function showMapError() {
+        function showMapError(message = "We're having trouble loading the map.") {
             mapError = true;
             const mapElement = document.getElementById('map');
             mapElement.innerHTML = `
                 <div class="map-error">
                     <i class="fas fa-exclamation-triangle"></i>
                     <h3>Map Loading Error</h3>
-                    <p>We're having trouble loading the map. You can still use the manual location feature to find nearby waste facilities.</p>
-                    <button class="action-btn primary-btn" onclick="location.reload()">
-                        <i class="fas fa-redo"></i> Retry Loading Map
-                    </button>
+                    <p>${message}</p>
+                    <p>You can still use the location list to find nearby waste facilities.</p>
                 </div>
             `;
         }
 
-        // Get user's current location
+        // Get user's current location with proper error handling
         function getUserLocation() {
             const gpsStatus = document.getElementById('gpsStatus');
-            const locationInfo = document.getElementById('locationInfo');
-
-            if (navigator.geolocation) {
-                gpsStatus.innerHTML = '<i class="fas fa-satellite-dish loading"></i><span>Detecting your location...</span>';
-
-                navigator.geolocation.getCurrentPosition(
-                    function (position) {
-                        // Success callback
-                        const userLat = position.coords.latitude;
-                        const userLng = position.coords.longitude;
-                        userLocation = { lat: userLat, lng: userLng };
-
-                        // Update UI
-                        gpsStatus.innerHTML = '<i class="fas fa-check-circle" style="color:#4CAF50"></i><span>Location detected successfully</span>';
-                        document.getElementById('coordinates').textContent = `Lat: ${userLat.toFixed(4)}, Lng: ${userLng.toFixed(4)}`;
-
-                        // Update time
-                        updateLocationTime();
-
-                        // Center map on user location if map is available
-                        if (!mapError && map) {
-                            map.setCenter(userLocation);
-                            map.setZoom(13);
-
-                            // Add user marker
-                            if (userMarker) {
-                                userMarker.setMap(null);
-                            }
-
-                            userMarker = new google.maps.Marker({
-                                position: userLocation,
-                                map: map,
-                                title: "Your Location",
-                                icon: {
-                                    url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
-                                        <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                                            <circle cx="16" cy="16" r="12" fill="#2196F3" stroke="white" stroke-width="2"/>
-                                            <circle cx="16" cy="16" r="6" fill="white"/>
-                                        </svg>
-                                    `),
-                                    scaledSize: new google.maps.Size(32, 32),
-                                    anchor: new google.maps.Point(16, 16)
-                                }
-                            });
-                        }
-
-                        // Find nearby facilities
-                        findNearbyFacilities();
-                    },
-                    function (error) {
-                        // Error callback
-                        console.error("Error getting location:", error);
-                        gpsStatus.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#FF9800"></i><span>Could not detect location</span>';
-
-                        // Use default location (Delhi) and show all facilities
-                        userLocation = cityCoordinates.delhi;
-                        showAllFacilities();
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 60000
-                    }
-                );
-            } else {
-                // Geolocation not supported
-                gpsStatus.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#f44336"></i><span>Geolocation not supported by this browser</span>';
-
-                // Use default location (Delhi) and show all facilities
-                userLocation = cityCoordinates.delhi;
-                showAllFacilities();
+            
+            if (!navigator.geolocation) {
+                console.log("Geolocation not supported");
+                gpsStatus.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#f44336"></i><span>Geolocation not supported by browser</span>';
+                showStatusMessage("Your browser doesn't support geolocation. Using default location.", "warning");
+                return;
             }
+
+            gpsStatus.innerHTML = '<i class="fas fa-satellite-dish loading"></i><span>Detecting your location...</span>';
+
+            // Clear any existing watch
+            if (geolocationWatchId !== null) {
+                navigator.geolocation.clearWatch(geolocationWatchId);
+            }
+
+            // Use getCurrentPosition with a timeout
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    handleLocationSuccess(position);
+                },
+                (error) => {
+                    handleLocationError(error);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000, // 10 seconds timeout
+                    maximumAge: 0 // Don't use cached position
+                }
+            );
+
+            // Also set up a watch for continuous updates
+            geolocationWatchId = navigator.geolocation.watchPosition(
+                (position) => {
+                    handleLocationSuccess(position);
+                },
+                (error) => {
+                    // Don't show error on watchPosition failure
+                    console.log("WatchPosition error:", error);
+                },
+                {
+                    enableHighAccuracy: false,
+                    maximumAge: 30000, // 30 seconds
+                    timeout: 5000
+                }
+            );
+        }
+
+        function handleLocationSuccess(position) {
+            console.log("Location detected:", position.coords);
+            
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+            userLocation = { lat: userLat, lng: userLng };
+
+            // Update UI
+            const gpsStatus = document.getElementById('gpsStatus');
+            gpsStatus.innerHTML = '<i class="fas fa-check-circle" style="color:#4CAF50"></i><span>Location detected successfully</span>';
+
+            // Get city name from coordinates
+            getCityFromCoordinates(userLat, userLng)
+                .then(cityName => {
+                    updateLocationDisplay(userLocation, cityName);
+                    showStatusMessage(`Location detected: ${cityName}`, "success");
+                })
+                .catch(error => {
+                    console.log("Could not get city name:", error);
+                    updateLocationDisplay(userLocation, "Your Current Location");
+                    showStatusMessage("Location detected successfully", "success");
+                });
+
+            // Update map if available
+            if (!mapError && map) {
+                map.setCenter(userLocation);
+                map.setZoom(14);
+
+                // Update user marker
+                if (userMarker) {
+                    userMarker.setMap(null);
+                }
+                addUserMarker(userLocation, "Your Location");
+            }
+
+            // Find nearby facilities
+            findNearbyFacilities();
+        }
+
+        function handleLocationError(error) {
+            console.error("Geolocation error:", error);
+            
+            const gpsStatus = document.getElementById('gpsStatus');
+            let errorMessage = "Could not detect location";
+            
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = "Location permission denied. Using default location.";
+                    showStatusMessage("Please enable location services in your browser settings for accurate results.", "warning");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = "Location information unavailable. Using default location.";
+                    showStatusMessage("Location services are not available. Using default location.", "warning");
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = "Location request timed out. Using default location.";
+                    showStatusMessage("Location detection took too long. Using default location.", "warning");
+                    break;
+                default:
+                    errorMessage = "Unknown location error. Using default location.";
+                    showStatusMessage("Could not detect your location. Using default location.", "warning");
+                    break;
+            }
+            
+            gpsStatus.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#FF9800"></i><span>${errorMessage}</span>`;
+            
+            // Use default location
+            userLocation = defaultLocation;
+            
+            if (!mapError && map) {
+                map.setCenter(userLocation);
+                map.setZoom(12);
+                
+                if (userMarker) {
+                    userMarker.setMap(null);
+                }
+                addUserMarker(userLocation, "Default Location (ATME College)");
+            }
+            
+            updateLocationDisplay(userLocation, "Default Location (ATME College)");
+            showAllFacilities();
+        }
+
+        // Get city name from coordinates using Nominatim
+        async function getCityFromCoordinates(lat, lng) {
+            try {
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10&accept-language=en`
+                );
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                
+                if (data.address) {
+                    // Try to get city/town/village name
+                    return data.address.city || 
+                           data.address.town || 
+                           data.address.village || 
+                           data.address.county ||
+                           "Unknown Location";
+                }
+                
+                return "Unknown Location";
+            } catch (error) {
+                console.log("Error getting city name:", error);
+                throw error;
+            }
+        }
+
+        // Add user marker to map
+        function addUserMarker(location, title) {
+            if (mapError || !map) return;
+            
+            userMarker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: title,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 10,
+                    fillColor: "#2196F3",
+                    fillOpacity: 1,
+                    strokeColor: "white",
+                    strokeWeight: 2
+                },
+                animation: google.maps.Animation.DROP
+            });
+            
+            // Add click listener
+            userMarker.addListener('click', () => {
+                infoWindow.setContent(`<div style="color: #333; padding: 10px;"><strong>${title}</strong><br>Lat: ${location.lat.toFixed(4)}<br>Lng: ${location.lng.toFixed(4)}</div>`);
+                infoWindow.open(map, userMarker);
+            });
+        }
+
+        // Update location display
+        function updateLocationDisplay(location, locationName) {
+            document.getElementById('coordinates').textContent = `Lat: ${location.lat.toFixed(4)}, Lng: ${location.lng.toFixed(4)}`;
+            document.getElementById('cityName').textContent = locationName;
+            updateLocationTime();
         }
 
         // Update location time
         function updateLocationTime() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             document.getElementById('locationTime').textContent = timeString;
         }
 
@@ -1067,11 +1128,9 @@
             const loadingIndicator = document.getElementById('loadingIndicator');
             loadingIndicator.style.display = 'block';
 
-            // Clear existing markers
-            if (!mapError) {
-                facilityMarkers.forEach(marker => marker.setMap(null));
+            if (!userLocation) {
+                userLocation = defaultLocation;
             }
-            facilityMarkers = [];
 
             setTimeout(() => {
                 // Calculate distances and sort by proximity
@@ -1086,8 +1145,14 @@
                 // Sort by distance
                 facilitiesWithDistance.sort((a, b) => a.distance - b.distance);
 
-                // Show the nearest 7-8 facilities
+                // Show the nearest 5-8 facilities
                 const nearestFacilities = facilitiesWithDistance.slice(0, 8);
+
+                // Clear existing markers
+                if (!mapError) {
+                    facilityMarkers.forEach(marker => marker.setMap(null));
+                }
+                facilityMarkers = [];
 
                 // Add markers to map if available
                 if (!mapError) {
@@ -1104,23 +1169,54 @@
 
                 // Hide loading indicator
                 loadingIndicator.style.display = 'none';
-            }, 2000);
+                
+                showStatusMessage(`Found ${nearestFacilities.length} nearby waste facilities`, "success");
+            }, 1500);
         }
 
         // Show all facilities (fallback when location is not available)
         function showAllFacilities() {
-            // Add all facility markers if map is available
-            if (!mapError) {
-                wasteManagementData.forEach(facility => {
-                    addFacilityMarker(facility);
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            loadingIndicator.style.display = 'block';
+
+            setTimeout(() => {
+                // Clear existing markers
+                if (!mapError) {
+                    facilityMarkers.forEach(marker => marker.setMap(null));
+                }
+                facilityMarkers = [];
+
+                // Add all facility markers if map is available
+                if (!mapError) {
+                    wasteManagementData.forEach(facility => {
+                        if (currentFilter === "all" || facility.WasteType === currentFilter) {
+                            addFacilityMarker(facility);
+                        }
+                    });
+                }
+
+                // Update the locations list with all facilities
+                const facilitiesWithDistance = wasteManagementData.map(facility => {
+                    const distance = userLocation ? calculateDistance(
+                        userLocation.lat, userLocation.lng,
+                        facility.Latitude, facility.Longitude
+                    ) : null;
+                    return { ...facility, distance };
                 });
-            }
 
-            // Update the locations list with all facilities
-            updateLocationsList(wasteManagementData);
+                facilitiesWithDistance.sort((a, b) => {
+                    if (a.distance === null) return 1;
+                    if (b.distance === null) return -1;
+                    return a.distance - b.distance;
+                });
 
-            // Update stats
-            updateStats(wasteManagementData);
+                updateLocationsList(facilitiesWithDistance.slice(0, 10));
+                updateStats(facilitiesWithDistance);
+
+                loadingIndicator.style.display = 'none';
+                
+                showStatusMessage(`Showing ${facilitiesWithDistance.length} waste facilities across India`, "info");
+            }, 1500);
         }
 
         // Add a facility marker to the map
@@ -1129,6 +1225,8 @@
             if (currentFilter !== "all" && facility.WasteType !== currentFilter) {
                 return;
             }
+
+            if (mapError || !map) return;
 
             // Determine icon color based on waste type
             let iconColor;
@@ -1152,80 +1250,126 @@
                     iconColor = '#4CAF50';
             }
 
-            // Determine status based on recycling rate
-            let statusColor;
-            const recyclingRate = facility.RecyclingRate;
-            if (recyclingRate > 60) {
-                statusColor = '#4CAF50'; // Good
-            } else if (recyclingRate > 40) {
-                statusColor = '#FF9800'; // Average
-            } else {
-                statusColor = '#f44336'; // Poor
-            }
-
-            // Create dustbin icon
-            const marker = new google.maps.Marker({
-                position: { lat: facility.Latitude, lng: facility.Longitude },
-                map: map,
-                title: facility.LandfillName,
-                icon: {
-                    url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
-                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="8" y="12" width="24" height="20" rx="2" fill="${iconColor}" stroke="white" stroke-width="2"/>
-                            <rect x="12" y="16" width="4" height="12" fill="white" opacity="0.7"/>
-                            <rect x="20" y="16" width="4" height="12" fill="white" opacity="0.7"/>
-                            <rect x="28" y="16" width="4" height="12" fill="white" opacity="0.7"/>
-                            <path d="M6 12 H34 V10 H6 Z" fill="${iconColor}" stroke="white" stroke-width="2"/>
-                            <circle cx="20" cy="8" r="4" fill="${iconColor}" stroke="white" stroke-width="2"/>
-                            <circle cx="20" cy="8" r="2" fill="${statusColor}"/>
-                        </svg>
-                    `),
-                    scaledSize: new google.maps.Size(40, 40),
-                    anchor: new google.maps.Point(20, 20)
+            // Create marker using AdvancedMarkerElement if available
+            let marker;
+            
+            try {
+                if (window.google && google.maps && google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
+                    // Use AdvancedMarkerElement
+                    marker = new google.maps.marker.AdvancedMarkerElement({
+                        position: { lat: facility.Latitude, lng: facility.Longitude },
+                        map: map,
+                        title: facility.LandfillName,
+                        content: createMarkerContent(iconColor, facility.RecyclingRate)
+                    });
+                } else {
+                    // Fallback to traditional Marker
+                    marker = new google.maps.Marker({
+                        position: { lat: facility.Latitude, lng: facility.Longitude },
+                        map: map,
+                        title: facility.LandfillName,
+                        icon: createMarkerIcon(iconColor, facility.RecyclingRate)
+                    });
                 }
-            });
 
-            // Add click listener to show info
-            marker.addListener('click', function () {
-                const contentString = `
-                    <div style="color: #333; max-width: 250px;">
-                        <h3 style="margin: 0 0 10px 0; color: #2E7D32;">${facility.LandfillName}</h3>
-                        <p style="margin: 5px 0;"><strong>City:</strong> ${facility.City}</p>
-                        <p style="margin: 5px 0;"><strong>Waste Type:</strong> ${facility.WasteType}</p>
-                        <p style="margin: 5px 0;"><strong>Waste Generated:</strong> ${facility.WasteGenerated} tons/day</p>
-                        <p style="margin: 5px 0;"><strong>Recycling Rate:</strong> ${facility.RecyclingRate}%</p>
-                        <p style="margin: 5px 0;"><strong>Disposal Method:</strong> ${facility.DisposalMethod}</p>
-                        <p style="margin: 5px 0;"><strong>Capacity:</strong> ${facility.LandfillCapacity} tons</p>
-                        <p style="margin: 5px 0;"><strong>Distance:</strong> ${facility.distance ? facility.distance.toFixed(2) + ' km' : 'Unknown'}</p>
+                // Add click listener to show info
+                if (marker.addListener) {
+                    marker.addListener('click', function () {
+                        showFacilityInfo(facility, marker);
+                    });
+                } else {
+                    // For AdvancedMarkerElement
+                    marker.addListener('click', () => {
+                        showFacilityInfo(facility, marker);
+                    });
+                }
+
+                facilityMarkers.push(marker);
+            } catch (error) {
+                console.error("Error creating marker:", error);
+            }
+        }
+
+        // Create marker content for AdvancedMarkerElement
+        function createMarkerContent(color, recyclingRate) {
+            const container = document.createElement('div');
+            container.style.width = '40px';
+            container.style.height = '40px';
+            container.style.borderRadius = '50%';
+            container.style.backgroundColor = color;
+            container.style.border = '2px solid white';
+            container.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+            container.style.display = 'flex';
+            container.style.alignItems = 'center';
+            container.style.justifyContent = 'center';
+            container.style.color = 'white';
+            container.style.fontWeight = 'bold';
+            container.style.fontSize = '12px';
+            
+            const innerCircle = document.createElement('div');
+            innerCircle.style.width = '12px';
+            innerCircle.style.height = '12px';
+            innerCircle.style.borderRadius = '50%';
+            innerCircle.style.backgroundColor = recyclingRate > 60 ? '#4CAF50' : recyclingRate > 40 ? '#FF9800' : '#f44336';
+            
+            container.appendChild(innerCircle);
+            return container;
+        }
+
+        // Create marker icon for traditional Marker
+        function createMarkerIcon(color, recyclingRate) {
+            const svg = `
+                <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="18" fill="${color}" stroke="white" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="8" fill="${recyclingRate > 60 ? '#4CAF50' : recyclingRate > 40 ? '#FF9800' : '#f44336'}"/>
+                </svg>
+            `;
+            
+            return {
+                url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
+                scaledSize: new google.maps.Size(40, 40),
+                anchor: new google.maps.Point(20, 20)
+            };
+        }
+
+        // Show facility info in info window
+        function showFacilityInfo(facility, marker) {
+            const contentString = `
+                <div style="color: #333; max-width: 250px; font-family: Arial, sans-serif;">
+                    <div style="background: #2E7D32; color: white; padding: 10px; border-radius: 5px 5px 0 0; margin: -8px -8px 10px -8px;">
+                        <h3 style="margin: 0; font-size: 14px;">${facility.LandfillName}</h3>
                     </div>
-                `;
+                    <div style="padding: 5px;">
+                        <p style="margin: 5px 0; font-size: 12px;"><strong>📍 City:</strong> ${facility.City}</p>
+                        <p style="margin: 5px 0; font-size: 12px;"><strong>🗑️ Waste Type:</strong> ${facility.WasteType}</p>
+                        <p style="margin: 5px 0; font-size: 12px;"><strong>📊 Waste Generated:</strong> ${facility.WasteGenerated} tons/day</p>
+                        <p style="margin: 5px 0; font-size: 12px;"><strong>♻️ Recycling Rate:</strong> ${facility.RecyclingRate}%</p>
+                        <p style="margin: 5px 0; font-size: 12px;"><strong>🔄 Disposal Method:</strong> ${facility.DisposalMethod}</p>
+                        <p style="margin: 5px 0; font-size: 12px;"><strong>📦 Capacity:</strong> ${facility.LandfillCapacity.toLocaleString()} tons</p>
+                        <p style="margin: 5px 0; font-size: 12px;"><strong>📏 Distance:</strong> ${facility.distance ? facility.distance.toFixed(2) + ' km' : 'Unknown'}</p>
+                    </div>
+                </div>
+            `;
 
-                infoWindow.setContent(contentString);
-                infoWindow.open(map, marker);
-            });
-
-            facilityMarkers.push(marker);
+            infoWindow.setContent(contentString);
+            infoWindow.open(map, marker);
         }
 
         // Update the locations list in the sidebar
         function updateLocationsList(facilities) {
             const locationsList = document.getElementById('locationsList');
-            locationsList.innerHTML = '';
-
-            // Filter facilities based on current filter
-            const filteredFacilities = currentFilter === "all"
-                ? facilities
-                : facilities.filter(f => f.WasteType === currentFilter);
-
-            if (filteredFacilities.length === 0) {
+            
+            if (!facilities || facilities.length === 0) {
                 locationsList.innerHTML = '<div class="location-card"><div class="location-details">No facilities found matching your criteria.</div></div>';
                 return;
             }
 
-            filteredFacilities.forEach(facility => {
+            locationsList.innerHTML = '';
+
+            facilities.forEach(facility => {
                 const card = document.createElement('div');
                 card.className = 'location-card';
-                card.dataset.id = facility.id;
+                card.dataset.id = facility.LandfillName;
 
                 let typeClass = 'type-dustbin';
                 let typeIcon = 'trash';
@@ -1271,7 +1415,7 @@
                             <i class="fas fa-${typeIcon}"></i>
                             ${facility.LandfillName}
                         </div>
-                        <span class="location-distance-badge">${facility.distance ? facility.distance.toFixed(2) + ' km' : '?'}</span>
+                        ${facility.distance ? `<span class="location-distance-badge">${facility.distance.toFixed(2)} km</span>` : ''}
                     </div>
                     <div class="location-details">
                         <i class="fas fa-map-marker-alt"></i> ${facility.City}
@@ -1291,14 +1435,14 @@
                         map.setCenter({ lat: facility.Latitude, lng: facility.Longitude });
                         map.setZoom(16);
 
-                        // Open info window for the corresponding marker
-                        const marker = facilityMarkers.find(m =>
-                            m.getPosition().lat() === facility.Latitude &&
-                            m.getPosition().lng() === facility.Longitude
-                        );
+                        // Find and trigger the corresponding marker
+                        const marker = facilityMarkers.find(m => {
+                            const pos = m.position || m.getPosition();
+                            return pos.lat() === facility.Latitude && pos.lng() === facility.Longitude;
+                        });
 
                         if (marker) {
-                            google.maps.event.trigger(marker, 'click');
+                            showFacilityInfo(facility, marker);
                         }
                     }
 
@@ -1337,7 +1481,9 @@
 
             // Clear existing markers
             if (!mapError) {
-                facilityMarkers.forEach(marker => marker.setMap(null));
+                facilityMarkers.forEach(marker => {
+                    if (marker.setMap) marker.setMap(null);
+                });
             }
             facilityMarkers = [];
 
@@ -1366,6 +1512,8 @@
                 updateLocationsList(wasteManagementData);
                 updateStats(wasteManagementData);
             }
+            
+            showStatusMessage(`Filter applied: ${type === 'all' ? 'All waste types' : type}`, "info");
         }
 
         // Calculate distance between two coordinates (Haversine formula)
@@ -1380,6 +1528,39 @@
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             const distance = R * c;
             return distance;
+        }
+
+        // Show status message
+        function showStatusMessage(message, type = "info") {
+            const statusMessage = document.getElementById('statusMessage');
+            
+            let className, icon;
+            switch(type) {
+                case "success":
+                    className = "success-message";
+                    icon = "check-circle";
+                    break;
+                case "warning":
+                    className = "warning-message";
+                    icon = "exclamation-triangle";
+                    break;
+                case "error":
+                    className = "error-message";
+                    icon = "times-circle";
+                    break;
+                default:
+                    className = "success-message";
+                    icon = "info-circle";
+            }
+            
+            statusMessage.className = className;
+            statusMessage.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
+            statusMessage.style.display = 'flex';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 5000);
         }
 
         // Create background animation
@@ -1431,7 +1612,15 @@
             // Add error handler for Google Maps
             window.gm_authFailure = function () {
                 console.error("Google Maps authentication failed");
-                showMapError();
+                showMapError("Google Maps authentication failed. Please check your API key.");
+            };
+            
+            // Handle Google Maps API errors
+            window.onerror = function(msg, url, lineNo, columnNo, error) {
+                if (msg.includes('google') || msg.includes('maps')) {
+                    console.error("Google Maps error:", msg);
+                }
+                return false;
             };
         });
     </script>
